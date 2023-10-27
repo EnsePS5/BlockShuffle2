@@ -1,0 +1,9 @@
+name: BlockShuffle_2.0
+version: '${project.version}'
+main: com.spigot.plugin.blockshuffle2.BlockShuffle2
+api-version: '1.20'
+authors: [ EnsePS5 ]
+commands:
+  bs2:
+    usage: /<command>
+
