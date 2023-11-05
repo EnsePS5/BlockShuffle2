@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabCompleter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandManager implements CommandExecutor, TabCompleter {
@@ -22,25 +23,32 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
         if (commandSender.isOp()){
-
             switch (args.length){
                 case 0: {
                     BlockShuffle2.run();
+                    break;
                 }
+                case 1: {
+                    if (args[0].equals("terminate")){
+                        System.out.println("TERMINUJ ZADANIE");
+                    }
+                }
+
             }
-            return true;
         }
 
-        return false;
+        return true;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String label, String[] args) {
 
+        List<String> adders = new ArrayList<>();
+
         if (args.length == 1){
-            //TODO completion on tab
+            adders.add("terminate");
         }
 
-        return null;
+        return adders;
     }
 }
