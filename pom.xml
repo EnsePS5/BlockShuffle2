@@ -6,7 +6,7 @@
 
     <groupId>com.spigot.plugin</groupId>
     <artifactId>BlockShuffle_2.0</artifactId>
-    <version>0.0.7.2 TEST_ChunkLoaderV2</version>
+    <version>0.2.0 TEST_FullGroupSegregation</version>
     <packaging>jar</packaging>
 
     <name>BlockShuffle_2.0</name>
@@ -67,7 +67,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.20.1-R0.1-SNAPSHOT</version>
+            <version>1.20.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

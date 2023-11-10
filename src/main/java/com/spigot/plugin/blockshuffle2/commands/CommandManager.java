@@ -2,6 +2,8 @@ package com.spigot.plugin.blockshuffle2.commands;
 
 import com.spigot.plugin.blockshuffle2.BlockShuffle2;
 import org.bukkit.Bukkit;
+import org.bukkit.RegionAccessor;
+import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,5 +52,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         }
 
         return adders;
+    }
+
+    public boolean isBiomeInBorder(Biome biome){
+        return Bukkit.dispatchCommand(console, "locate biome minecraft:" + biome.name().toLowerCase());
+        //TODO wyodrębnić biomy które są w zasięgu borderu kiedy serwer się odpala.
     }
 }

@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.WorldBorder;
+import org.bukkit.block.Biome;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -19,12 +20,15 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.util.BiomeSearchResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.spigot.plugin.blockshuffle2.ConstantUtils.WORLD_NAME;
 import static com.spigot.plugin.blockshuffle2.ConstantUtils.WORLD_SIZE;
@@ -49,6 +53,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     private static WorldBorder worldBorder;
     private static final List<Material> AllMaterials = List.of(Material.values());
     private static final List<Chunk> AllChunksInBorder = new ArrayList<>();
+    private static final Set<Biome> AllBiomesInChunks = new HashSet<>();
 
     @Override
     public void onEnable() {
@@ -56,17 +61,17 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         System.out.println(BlockShuffle2.class.getName() + " launch. Initialization...");
 
         commandManager = new CommandManager();
-        consoleCommandSender = Bukkit.getServer().getConsoleSender();
-
         getServer().getPluginManager().registerEvents(this, this);
         Objects.requireNonNull(this.getCommand("bs2")).setExecutor(commandManager);
         Objects.requireNonNull(this.getCommand("bs2")).setTabCompleter(commandManager);
+
+        consoleCommandSender = Bukkit.getServer().getConsoleSender();
 
         prepareScoreTableOnServerStart();
 
         try {
             worldBorder = Objects.requireNonNull(getServer().getWorld(WORLD_NAME)).getWorldBorder();
-            worldBorder.setCenter(Objects.requireNonNull(getServer().getWorld("world")).getSpawnLocation());
+            worldBorder.setCenter(Objects.requireNonNull(getServer().getWorld(WORLD_NAME)).getSpawnLocation());
         }catch (NullPointerException e){
             throw new NullPointerException("World name should be " + WORLD_NAME);
         }
@@ -91,7 +96,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
     private static void prepareWorldOnPluginStart() {
 
-        worldBorder.setSize(1000);
+        worldBorder.setSize(WORLD_SIZE);
         worldBorder.setDamageAmount(100);
         worldBorder.setWarningDistance(16);
         worldBorder.setWarningTime(4);
@@ -101,26 +106,23 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         ServerMessageUrgent("PLEASE DO NOT MOVE, SERVER WILL BE FROZEN FOR BETTER PERFORMANCE");
         //TODO zczytać bloki z okolicy
 
-        getAllChunksFromBorder(Bukkit.getServer());
+        getAllChunksAndBiomesFromBorder(Bukkit.getServer());
         preparePlayableBlocks(Bukkit.getServer());
 
         System.out.println("World Initialized Successfully");
         ServerMessage("World Initialized Successfully!");
 
-        System.out.println(AllChunksInBorder);
-
+        System.out.println(AllBiomesInChunks);
     }
 
     private static void preparePlayableBlocks(Server server) {
-
+        System.out.println(AllMaterials);
         for (Material material : AllMaterials){
-            
-            
-            
+            break;
         }
     }
 
-    private static void getAllChunksFromBorder(Server server) {
+    private static void getAllChunksAndBiomesFromBorder(Server server) {
 
         double percentageCounter = 0;
 
@@ -128,17 +130,35 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         {
             for (int y = -(WORLD_SIZE / 2) + 8; y < (WORLD_SIZE / 2); y = y + 16)
             {
-                for (int z = server.getWorld(WORLD_NAME).getMinHeight();
-                     z <= server.getWorld(WORLD_NAME).getMaxHeight();
-                     z = z + server.getWorld(WORLD_NAME).getMaxHeight() + 64) {
-                    AllChunksInBorder.add(new Location(server.getWorld(WORLD_NAME), x, y, z).getChunk());
-                    System.out.println("Added chunk at x,y,z -> " + x +" "+ y +" "+ z);
-                }
+                Location location = new Location(server.getWorld(WORLD_NAME), x, y, 64);
+                AllChunksInBorder.add(location.getChunk());
             }
             percentageCounter++;
-            System.out.println("---- <" + Math.rint(percentageCounter/((double) WORLD_SIZE /16))*100 + "%> ----");
-            ServerMessage("---- <" + Math.rint(percentageCounter/((double) WORLD_SIZE /16))*100 + "%> ----");
+            System.out.println("---- <" + String.format("%.2f", percentageCounter/((double) WORLD_SIZE /16)*100) + "%> ----");
+            ServerMessage("---- <" + String.format("%.2f", percentageCounter/((double) WORLD_SIZE /16)*100) + "%> ----");
         }
+
+        System.out.println("Getting Biomes in range...");
+        ServerMessage("Getting Biomes in range...");
+
+        for (Biome biome : Biome.values()) {
+            BiomeSearchResult biomeSearchResult = Objects.requireNonNull(server.getWorld(WORLD_NAME)).locateNearestBiome(
+                    Objects.requireNonNull(server.getWorld(WORLD_NAME)).getSpawnLocation(), (WORLD_SIZE / 2), biome);
+
+            if (biomeSearchResult != null) {
+
+                Location location = biomeSearchResult.getLocation();
+
+                System.out.println(biome + " dis -> " + location.distance(server.getWorld(WORLD_NAME).getSpawnLocation()));
+                if (location.distance(server.getWorld(WORLD_NAME).getSpawnLocation()) <= (double) WORLD_SIZE / 2) {
+                    System.out.println("Qualified! Added to list");
+                    AllBiomesInChunks.add(biome);
+                }
+            }
+        }
+
+        System.out.println("Biomes Registered!");
+        ServerMessage("Biomes Registered!");
 
     }
 
