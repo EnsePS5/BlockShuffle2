@@ -54,6 +54,8 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     private static final List<Material> AllMaterials = List.of(Material.values());
     private static final List<Chunk> AllChunksInBorder = new ArrayList<>();
     private static final Set<Biome> AllBiomesInChunks = new HashSet<>();
+    private static Map<Biome, Set<Material>> BLOCKS_AVAILABLE_IN_GAME;
+    private static final PlayableBlocks playableBlocksManager = PlayableBlocks.getInstance();
 
     @Override
     public void onEnable() {
@@ -68,6 +70,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         consoleCommandSender = Bukkit.getServer().getConsoleSender();
 
         prepareScoreTableOnServerStart();
+        new BlockShuffleLibrary();
 
         try {
             worldBorder = Objects.requireNonNull(getServer().getWorld(WORLD_NAME)).getWorldBorder();
@@ -104,22 +107,14 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         System.out.println("Starting World Initialization...");
         ServerMessage("Starting World Initialization...");
         ServerMessageUrgent("PLEASE DO NOT MOVE, SERVER WILL BE FROZEN FOR BETTER PERFORMANCE");
-        //TODO zczytać bloki z okolicy
 
         getAllChunksAndBiomesFromBorder(Bukkit.getServer());
-        preparePlayableBlocks(Bukkit.getServer());
+        BlockShuffleLibrary.prepareBlocks();
+
+        BLOCKS_AVAILABLE_IN_GAME = playableBlocksManager.filterOutUnusedBiomes(AllBiomesInChunks);
 
         System.out.println("World Initialized Successfully");
         ServerMessage("World Initialized Successfully!");
-
-        System.out.println(AllBiomesInChunks);
-    }
-
-    private static void preparePlayableBlocks(Server server) {
-        System.out.println(AllMaterials);
-        for (Material material : AllMaterials){
-            break;
-        }
     }
 
     private static void getAllChunksAndBiomesFromBorder(Server server) {

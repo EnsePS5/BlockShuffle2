@@ -2,16 +2,23 @@ package com.spigot.plugin.blockshuffle2;
 
 import org.bukkit.Material;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class BlockShuffleLibrary {
+public final class BlockShuffleLibrary {
 
-    public static final Material Blue_orchid = Material.BLUE_ORCHID;
     public static final Material Allium = Material.ALLIUM;
     public static final Material Moss_carpet = Material.MOSS_CARPET;
-    public static final Material Cactus = Material.CACTUS;
+    public static final Material Emerald = Material.EMERALD;
 
-    public static final List<Material> BEES = List.of(
+    public static List<Material> TROPICAL_FISHES = new ArrayList<>(Arrays.asList(
+            Material.TROPICAL_FISH,
+            Material.TROPICAL_FISH_BUCKET,
+            Material.PUFFERFISH_BUCKET
+    ));
+
+    public static List<Material> BEES = new ArrayList<>(Arrays.asList(
             Material.BEEHIVE,
             Material.BEE_NEST,
             Material.HONEYCOMB,
@@ -19,18 +26,12 @@ public class BlockShuffleLibrary {
             Material.HONEYCOMB_BLOCK,
             Material.HONEY_BLOCK,
             Material.CANDLE
-    );
+    ));
 
-    public static final List<Material> VINES = List.of(
+    public static List<Material> VINES = new ArrayList<>(Arrays.asList(
             Material.VINE
-    );
-    public static final List<Material> MELON = List.of(
-            Material.MELON,
-            Material.MELON_SLICE,
-            Material.MELON_SEEDS,
-            Material.GLISTERING_MELON_SLICE
-    );
-    public static final List<Material> MOSSY_BLOCKS = List.of(
+    ));
+    public static List<Material> MOSSY_BLOCKS = new ArrayList<>(Arrays.asList(
             Material.MOSSY_COBBLESTONE,
             Material.MOSSY_STONE_BRICKS,
             Material.MOSSY_COBBLESTONE_WALL,
@@ -39,8 +40,8 @@ public class BlockShuffleLibrary {
             Material.MOSSY_COBBLESTONE_STAIRS,
             Material.MOSSY_STONE_BRICK_SLAB,
             Material.MOSSY_COBBLESTONE_SLAB
-    );
-    public static final List<Material> BOOKS = List.of(
+    ));
+    public static List<Material> BOOKS = new ArrayList<>(Arrays.asList(
             Material.SUGAR_CANE,
             Material.BOOKSHELF,
             Material.PAPER,
@@ -55,8 +56,8 @@ public class BlockShuffleLibrary {
             Material.FIREWORK_ROCKET,
             Material.WRITABLE_BOOK,
             Material.WRITTEN_BOOK
-    );
-    public static final List<Material> CLAY = List.of(
+    ));
+    public static List<Material> CLAY = new ArrayList<>(Arrays.asList(
             Material.CLAY,
             Material.CLAY_BALL,
             Material.BRICK_SLAB,
@@ -67,8 +68,8 @@ public class BlockShuffleLibrary {
             Material.BRICK_WALL,
             Material.TERRACOTTA,
             Material.FLOWER_POT
-    );
-    public static final List<Material> TERRACOTTA = List.of(
+    ));
+    public static List<Material> TERRACOTTA = new ArrayList<>(Arrays.asList(
             Material.WHITE_TERRACOTTA,
             Material.ORANGE_TERRACOTTA,
             Material.MAGENTA_TERRACOTTA,
@@ -101,16 +102,16 @@ public class BlockShuffleLibrary {
             Material.GREEN_GLAZED_TERRACOTTA,
             Material.RED_GLAZED_TERRACOTTA,
             Material.BLACK_GLAZED_TERRACOTTA
-    );
-    public static final List<Material> MUSHROOMS = List.of(
+    ));
+    public static List<Material> MUSHROOMS = new ArrayList<>(Arrays.asList(
             Material.BROWN_MUSHROOM,
             Material.RED_MUSHROOM,
             Material.MUSHROOM_STEW,
             Material.FERMENTED_SPIDER_EYE,
             Material.SUSPICIOUS_STEW
-    );
+    ));
 
-    public static final List<Material> GENERAL = List.of(
+    public static List<Material> GENERAL = new ArrayList<>(Arrays.asList(
             Material.DIRT,
             Material.COBBLESTONE,
             Material.DIORITE,
@@ -174,19 +175,25 @@ public class BlockShuffleLibrary {
             Material.WHEAT,
             Material.PAINTING,
             Material.CAMPFIRE
-    );
+    ));
 
     //BIOMES
-    public static final List<Material> JUNGLE = List.of(
-            Material.FERN
-    );
+    public static List<Material> JUNGLE = new ArrayList<>(Arrays.asList(
+            Material.FERN,
+            Material.COCOA_BEANS,
+            Material.COOKIE,
+            Material.COCOA,
+            Material.MELON,
+            Material.MELON_SLICE,
+            Material.MELON_SEEDS,
+            Material.GLISTERING_MELON_SLICE
+    ));
 
-    public static final List<Material> RED_DESERT = List.of(
+    public static List<Material> RED_DESERT = new ArrayList<>(Arrays.asList(
             Material.RED_SAND,
             Material.RED_SANDSTONE_SLAB,
             Material.CUT_RED_SANDSTONE_SLAB,
             Material.SMOOTH_RED_SANDSTONE,
-            Cactus,
             Material.RED_SANDSTONE_WALL,
             Material.RED_SANDSTONE,
             Material.CHISELED_RED_SANDSTONE,
@@ -194,45 +201,45 @@ public class BlockShuffleLibrary {
             Material.RED_SANDSTONE_STAIRS,
             Material.SMOOTH_RED_SANDSTONE_STAIRS,
             Material.SMOOTH_RED_SANDSTONE_SLAB
-    );
+    ));
 
-    public static final List<Material> BADLANDS = List.of(
+    public static List<Material> BADLANDS = new ArrayList<>(Arrays.asList(
             Material.TERRACOTTA
-    );
-    public static final List<Material> MEADOW = List.of(
+    ));
+    public static List<Material> MEADOW = new ArrayList<>(Arrays.asList(
             Allium
-    );
-    public static final List<Material> FLOWER_FOREST = List.of(
+    ));
+    public static List<Material> FLOWER_FOREST = new ArrayList<>(Arrays.asList(
             Allium,
             Material.RED_TULIP,
             Material.ORANGE_TULIP,
             Material.WHITE_TULIP,
             Material.PINK_TULIP
-    );
-    public static final List<Material> SWAMP = List.of(
-            Blue_orchid,
-            Moss_carpet,
-            Material.LILY_PAD
-    );
+    ));
+    public static List<Material> SWAMP = new ArrayList<>(Arrays.asList(
+            Material.BLUE_ORCHID,
+            Material.LILY_PAD,
+            Material.SLIME_BALL,
+            Material.SLIME_BLOCK
+    ));
 
-    public static final List<Material> RIVER = BOOKS;
-    public static final List<Material> OLD_GROWTH_TAIGA = MOSSY_BLOCKS;
-    public static final List<Material> SNOWLESS_TAIGA = List.of(
-            Blue_orchid,
+    public static List<Material> RIVER = BOOKS;
+    public static List<Material> OLD_GROWTH_TAIGA = MOSSY_BLOCKS;
+    public static List<Material> SNOWLESS_TAIGA = new ArrayList<>(Arrays.asList(
             Material.LARGE_FERN,
             Material.SWEET_BERRIES
-    );
+    ));
 
-    public static final List<Material> SNOWY_SLOPES = List.of(
+    public static List<Material> SNOWY_SLOPES = new ArrayList<>(Arrays.asList(
             Material.POWDER_SNOW_BUCKET,
             Material.GOAT_HORN
-    );
+    ));
 
-    public static final List<Material> SUNFLOWER_PLAINS = List.of(
+    public static List<Material> SUNFLOWER_PLAINS = new ArrayList<>(Arrays.asList(
             Material.SUNFLOWER
-    );
+    ));
 
-    public static final List<Material> SAND_BASE = List.of(
+    public static List<Material> SAND_BASE = new ArrayList<>(Arrays.asList(
             Material.SANDSTONE,
             Material.SAND,
             Material.GLASS,
@@ -248,46 +255,46 @@ public class BlockShuffleLibrary {
             Material.SMOOTH_SANDSTONE_STAIRS,
             Material.SMOOTH_SANDSTONE_SLAB,
             Material.GLASS_BOTTLE
-    );
+    ));
 
-    public static final List<Material> SNOW_BASE = List.of(
+    public static List<Material> SNOW_BASE = new ArrayList<>(Arrays.asList(
             Material.SNOW,
             Material.SNOW_BLOCK,
             Material.SNOWBALL
-    );
-    public static final List<Material> MUSHROOM_FIELDS = List.of(
+    ));
+    public static List<Material> MUSHROOM_FIELDS = new ArrayList<>(Arrays.asList(
             Material.MYCELIUM
-    );
+    ));
 
-    public static final List<Material> FLOWER_PLAINS_BASE = List.of(
+    public static List<Material> FLOWER_PLAINS_BASE = new ArrayList<>(Arrays.asList(
             Material.AZURE_BLUET,
             Material.OXEYE_DAISY,
             Material.CORNFLOWER
-    );
+    ));
 
-    public static final List<Material> FLOWER_FOREST_BASE = List.of(
+    public static List<Material> FLOWER_FOREST_BASE = new ArrayList<>(Arrays.asList(
             Material.LILY_OF_THE_VALLEY,
             Material.LILAC,
             Material.ROSE_BUSH,
             Material.PEONY
-    );
+    ));
 
-    public static final List<Material> DESERT = List.of(
+    public static List<Material> DESERT = new ArrayList<>(Arrays.asList(
             Material.DEAD_BUSH,
-            Cactus
-    );
+            Material.CACTUS
+    ));
 
-    public static final List<Material> OCEAN_BASE = List.of(
+    public static List<Material> OCEAN_BASE = new ArrayList<>(Arrays.asList(
             Material.SEAGRASS,
             Material.MAGMA_BLOCK,
             Material.HEART_OF_THE_SEA
-    );
-    public static final List<Material> DEEP_OCEAN = List.of(
+    ));
+    public static List<Material> DEEP_OCEAN = new ArrayList<>(Arrays.asList(
             Material.KELP,
             Material.DRIED_KELP,
             Material.DRIED_KELP_BLOCK
-    );
-    public static final List<Material> WARM_OCEAN = List.of(
+    ));
+    public static List<Material> WARM_OCEAN = new ArrayList<>(Arrays.asList(
             Material.SEA_PICKLE,
             Material.DEAD_BRAIN_CORAL_BLOCK,
             Material.DEAD_BUBBLE_CORAL_BLOCK,
@@ -298,13 +305,10 @@ public class BlockShuffleLibrary {
             Material.BRAIN_CORAL_BLOCK,
             Material.BUBBLE_CORAL_BLOCK,
             Material.FIRE_CORAL_BLOCK,
-            Material.HORN_CORAL_BLOCK,
-            Material.TROPICAL_FISH,
-            Material.TROPICAL_FISH_BUCKET,
-            Material.PUFFERFISH_BUCKET
-    );
+            Material.HORN_CORAL_BLOCK
+    ));
 
-    public static final List<Material> SCULK = List.of( //TODO All blocks are only silk touch
+    public static List<Material> SCULK = new ArrayList<>(Arrays.asList( //TODO All blocks are only silk touch
             Material.SCULK,
             Material.SCULK_VEIN,
             Material.SCULK_CATALYST,
@@ -313,20 +317,18 @@ public class BlockShuffleLibrary {
             Material.ECHO_SHARD,
             Material.SCULK_SENSOR,
             Material.CALIBRATED_SCULK_SENSOR
-    );
+    ));
 
     //MOB DROPS
-    public static final List<Material> AGGRESSIVE_MOD_DROPS = List.of(
+    public static List<Material> AGGRESSIVE_MOD_DROPS = new ArrayList<>(Arrays.asList(
             Material.BONE_BLOCK,
             Material.GUNPOWDER,
             Material.STRING,
             Material.ENDER_EYE,
-            Material.SLIME_BALL,
             Material.FISHING_ROD,
             Material.BONE,
             Material.BONE_MEAL,
             Material.STICKY_PISTON,
-            Material.SLIME_BLOCK,
             Material.SPIDER_EYE,
             Material.GLOWSTONE_DUST,
             Material.BOW,
@@ -338,9 +340,9 @@ public class BlockShuffleLibrary {
             Material.FIREWORK_STAR,
             Material.SHULKER_SHELL,
             Material.LEAD
-    );
+    ));
 
-    public static final List<Material> NEUTRAL_MOB_DROPS = List.of( //TODO Maybe i will add other colors of wool in the future here
+    public static List<Material> NEUTRAL_MOB_DROPS = new ArrayList<>(Arrays.asList( //TODO Maybe i will add other colors of wool in the future here
             Material.WHITE_WOOL,
             Material.FEATHER,
             Material.RABBIT_HIDE,
@@ -372,10 +374,10 @@ public class BlockShuffleLibrary {
             Material.LEATHER_BOOTS,
             Material.SALMON_BUCKET,
             Material.COD_BUCKET
-    );
+    ));
 
     //COLORS
-    public static final List<Material> COLORFUL_BLOCKS_AND_ITEMS = List.of(
+    public static List<Material> COLORFUL_BLOCKS_AND_ITEMS = new ArrayList<>(Arrays.asList(
             Material.ORANGE_WOOL,
             Material.MAGENTA_WOOL,
             Material.LIGHT_BLUE_WOOL,
@@ -535,13 +537,9 @@ public class BlockShuffleLibrary {
             Material.GREEN_CANDLE,
             Material.RED_CANDLE,
             Material.BLACK_CANDLE
-    );
+    ));
 
-    public static final List<Material> TOOLS_AND_ARMOUR_GEN_1_2 = List.of(
-
-    );
-
-    public static final List<Material> DEEP_BASE = List.of(
+    public static List<Material> DEEP_BASE = new ArrayList<>(Arrays.asList(
             Material.DEEPSLATE,
             Material.POLISHED_DEEPSLATE,
             Material.COBBLED_DEEPSLATE,
@@ -598,8 +596,8 @@ public class BlockShuffleLibrary {
             Material.ARMOR_STAND,
             Material.AMETHYST_SHARD,
             Material.AMETHYST_CLUSTER
-    );
-    public static final List<Material> OXIDIZED_AND_WAXED_COPPER_BLOCKS = List.of(
+    ));
+    public static List<Material> OXIDIZED_AND_WAXED_COPPER_BLOCKS = new ArrayList<>(Arrays.asList(
             Material.EXPOSED_COPPER,
             Material.WEATHERED_COPPER,
             Material.OXIDIZED_COPPER,
@@ -628,9 +626,9 @@ public class BlockShuffleLibrary {
             Material.WAXED_EXPOSED_CUT_COPPER_SLAB,
             Material.WAXED_WEATHERED_CUT_COPPER_SLAB,
             Material.WAXED_OXIDIZED_CUT_COPPER_SLAB
-    );
+    ));
     //ORES THINGS
-    public static final List<Material> RAW_ORE_BLOCKS = List.of(
+    public static List<Material> RAW_ORE_BLOCKS = new ArrayList<>(Arrays.asList(
             Material.COAL_BLOCK,
             Material.RAW_IRON_BLOCK,
             Material.RAW_COPPER_BLOCK,
@@ -642,8 +640,8 @@ public class BlockShuffleLibrary {
             Material.COAL,
             Material.CHARCOAL,
             Material.LAPIS_LAZULI
-    );
-    public static final List<Material> IRON_BLOCKS_AND_ITEMS = List.of(
+    ));
+    public static List<Material> IRON_BLOCKS_AND_ITEMS = new ArrayList<>(Arrays.asList(
             Material.IRON_BLOCK,
             Material.IRON_BARS,
             Material.CHAIN,
@@ -688,8 +686,8 @@ public class BlockShuffleLibrary {
             Material.SHIELD,
             Material.CROSSBOW,
             Material.LANTERN
-    );
-    public static final List<Material> COPPER_BLOCK_AND_ITEMS = List.of(
+    ));
+    public static List<Material> COPPER_BLOCK_AND_ITEMS = new ArrayList<>(Arrays.asList(
             Material.COPPER_BLOCK,
             Material.CUT_COPPER,
             Material.CUT_COPPER_STAIRS,
@@ -698,8 +696,8 @@ public class BlockShuffleLibrary {
             Material.COPPER_INGOT,
             Material.SPYGLASS,
             Material.BRUSH
-    );
-    public static final List<Material> GOLD_BLOCKS_AND_ITEMS = List.of(
+    ));
+    public static List<Material> GOLD_BLOCKS_AND_ITEMS = new ArrayList<>(Arrays.asList(
             Material.GOLD_BLOCK,
             Material.GOLDEN_SWORD,
             Material.GOLDEN_SHOVEL,
@@ -717,8 +715,8 @@ public class BlockShuffleLibrary {
             Material.GOLDEN_CARROT,
             Material.GOLDEN_APPLE,
             Material.GOLD_NUGGET
-    );
-    public static final List<Material> DIAMOND_BLOCKS_AND_ITEMS = List.of(
+    ));
+    public static List<Material> DIAMOND_BLOCKS_AND_ITEMS = new ArrayList<>(Arrays.asList(
             Material.DIAMOND_BLOCK,
             Material.OBSIDIAN,
             Material.JUKEBOX,
@@ -734,8 +732,8 @@ public class BlockShuffleLibrary {
             Material.DIAMOND_LEGGINGS,
             Material.DIAMOND_BOOTS,
             Material.DIAMOND
-    );
-    public static final List<Material> NETHERITE_BLOCKS_AND_ITEMS = List.of(
+    ));
+    public static List<Material> NETHERITE_BLOCKS_AND_ITEMS = new ArrayList<>(Arrays.asList(
             Material.NETHERITE_BLOCK,
             Material.NETHERITE_SWORD,
             Material.NETHERITE_SHOVEL,
@@ -749,10 +747,10 @@ public class BlockShuffleLibrary {
             Material.NETHERITE_LEGGINGS,
             Material.NETHERITE_BOOTS,
             Material.LODESTONE
-    );
+    ));
 
     //CAVES
-    public static final List<Material> LUSH_CAVE = List.of(
+    public static List<Material> LUSH_CAVE = new ArrayList<>(Arrays.asList(
             Material.ROOTED_DIRT,
             Material.AZALEA_LEAVES,
             Material.FLOWERING_AZALEA_LEAVES,
@@ -768,14 +766,14 @@ public class BlockShuffleLibrary {
             Material.GLOW_ITEM_FRAME,
             Material.AXOLOTL_BUCKET,
             Material.GLOW_BERRIES
-    );
+    ));
 
-    public static final List<Material> DRIPSTONE_CAVE = List.of(
+    public static List<Material> DRIPSTONE_CAVE = new ArrayList<>(Arrays.asList(
             Material.DRIPSTONE_BLOCK,
             Material.POINTED_DRIPSTONE
-    );
+    ));
 
-    public static final List<Material> SILK_TOUCH_ONLY = List.of(
+    public static List<Material> SILK_TOUCH_ONLY = new ArrayList<>(Arrays.asList(
             Material.COAL_ORE,
             Material.DEEPSLATE_COAL_ORE,
             Material.IRON_ORE,
@@ -823,11 +821,11 @@ public class BlockShuffleLibrary {
             Material.LARGE_AMETHYST_BUD,
             Material.MEDIUM_AMETHYST_BUD,
             Material.SMALL_AMETHYST_BUD
-    );
+    ));
 
     //OTHER THAN OVERWORLD
 
-    public static final List<Material> END = List.of(
+    public static List<Material> END = new ArrayList<>(Arrays.asList(
             Material.END_ROD,
             Material.CHORUS_PLANT,
             Material.CHORUS_FLOWER,
@@ -841,15 +839,15 @@ public class BlockShuffleLibrary {
             Material.END_STONE_BRICK_STAIRS,
             Material.END_STONE_BRICK_SLAB,
             Material.CHORUS_FRUIT
-    );
-    public static final List<Material> SILK_TOUCH_ONLY_NETHER = List.of(
+    ));
+    public static List<Material> SILK_TOUCH_ONLY_NETHER = new ArrayList<>(Arrays.asList(
             Material.CRIMSON_NYLIUM,
             Material.WARPED_NYLIUM,
             Material.NETHER_QUARTZ_ORE,
             Material.NETHER_GOLD_ORE
-    );
+    ));
 
-    public static final List<Material> NETHER = List.of(
+    public static List<Material> NETHER = new ArrayList<>(Arrays.asList(
             Material.ANCIENT_DEBRIS,
             Material.NETHER_BRICK_SLAB,
             Material.QUARTZ_SLAB,
@@ -915,10 +913,10 @@ public class BlockShuffleLibrary {
             Material.SPECTRAL_ARROW,
             Material.SOUL_LANTERN,
             Material.SHROOMLIGHT
-    );
+    ));
 
     //TREES
-    public static final List<Material> OAK_CRAFTS = List.of(
+    public static List<Material> OAK_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.OAK_PLANKS,
             Material.OAK_SAPLING,
             Material.OAK_LOG,
@@ -939,8 +937,8 @@ public class BlockShuffleLibrary {
             Material.OAK_SIGN,
             Material.OAK_HANGING_SIGN,
             Material.APPLE
-    );
-    public static final List<Material> SPRUCE_CRAFTS = List.of(
+    ));
+    public static List<Material> SPRUCE_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.SPRUCE_PLANKS,
             Material.SPRUCE_SAPLING,
             Material.SPRUCE_LOG,
@@ -960,8 +958,8 @@ public class BlockShuffleLibrary {
             Material.SPRUCE_CHEST_BOAT,
             Material.SPRUCE_SIGN,
             Material.SPRUCE_HANGING_SIGN
-    );
-    public static final List<Material> BIRCH_CRAFTS = List.of(
+    ));
+    public static List<Material> BIRCH_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.BIRCH_PLANKS,
             Material.BIRCH_SAPLING,
             Material.BIRCH_LOG,
@@ -981,8 +979,8 @@ public class BlockShuffleLibrary {
             Material.BIRCH_CHEST_BOAT,
             Material.BIRCH_SIGN,
             Material.BIRCH_HANGING_SIGN
-    );
-    public static final List<Material> JUNGLE_CRAFTS = List.of(
+    ));
+    public static List<Material> JUNGLE_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.JUNGLE_PLANKS,
             Material.JUNGLE_SAPLING,
             Material.JUNGLE_LOG,
@@ -1001,12 +999,9 @@ public class BlockShuffleLibrary {
             Material.JUNGLE_BOAT,
             Material.JUNGLE_CHEST_BOAT,
             Material.JUNGLE_SIGN,
-            Material.JUNGLE_HANGING_SIGN,
-            Material.COCOA_BEANS,
-            Material.COOKIE,
-            Material.COCOA
-    );
-    public static final List<Material> ACACIA_CRAFTS = List.of(
+            Material.JUNGLE_HANGING_SIGN
+    ));
+    public static List<Material> ACACIA_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.ACACIA_PLANKS,
             Material.ACACIA_SAPLING,
             Material.ACACIA_LOG,
@@ -1026,8 +1021,8 @@ public class BlockShuffleLibrary {
             Material.ACACIA_CHEST_BOAT,
             Material.ACACIA_SIGN,
             Material.ACACIA_HANGING_SIGN
-    );
-    public static final List<Material> CHERRY_CRAFTS = List.of(
+    ));
+    public static List<Material> CHERRY_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.CHERRY_PLANKS,
             Material.CHERRY_SAPLING,
             Material.CHERRY_LOG,
@@ -1048,8 +1043,8 @@ public class BlockShuffleLibrary {
             Material.CHERRY_CHEST_BOAT,
             Material.CHERRY_SIGN,
             Material.CHERRY_HANGING_SIGN
-    );
-    public static final List<Material> DARK_OAK_CRAFTS = List.of(
+    ));
+    public static List<Material> DARK_OAK_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.DARK_OAK_PLANKS,
             Material.DARK_OAK_SAPLING,
             Material.DARK_OAK_LOG,
@@ -1069,8 +1064,8 @@ public class BlockShuffleLibrary {
             Material.DARK_OAK_CHEST_BOAT,
             Material.DARK_OAK_SIGN,
             Material.DARK_OAK_HANGING_SIGN
-    );
-    public static final List<Material> MANGROVE_CRAFTS = List.of(
+    ));
+    public static List<Material> MANGROVE_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.MANGROVE_PLANKS,
             Material.MANGROVE_PROPAGULE,
             Material.MANGROVE_LOG,
@@ -1099,8 +1094,8 @@ public class BlockShuffleLibrary {
             Material.MANGROVE_CHEST_BOAT,
             Material.MANGROVE_SIGN,
             Material.MANGROVE_HANGING_SIGN
-    );
-    public static final List<Material> BAMBOO_CRAFTS = List.of(
+    ));
+    public static List<Material> BAMBOO_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.BAMBOO_PLANKS,
             Material.BAMBOO_MOSAIC,
             Material.BAMBOO,
@@ -1120,8 +1115,8 @@ public class BlockShuffleLibrary {
             Material.BAMBOO_SIGN,
             Material.BAMBOO_HANGING_SIGN,
             Material.SCAFFOLDING
-    );
-    public static final List<Material> CRIMSON_CRAFTS = List.of(
+    ));
+    public static List<Material> CRIMSON_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.CRIMSON_PLANKS,
             Material.CRIMSON_STEM,
             Material.STRIPPED_CRIMSON_STEM,
@@ -1140,8 +1135,8 @@ public class BlockShuffleLibrary {
             Material.CRIMSON_FENCE_GATE,
             Material.CRIMSON_HANGING_SIGN,
             Material.CRIMSON_SIGN
-    );
-    public static final List<Material> WARPED_CRAFTS = List.of(
+    ));
+    public static List<Material> WARPED_CRAFTS = new ArrayList<>(Arrays.asList(
             Material.WARPED_PLANKS,
             Material.WARPED_STEM,
             Material.STRIPPED_WARPED_STEM,
@@ -1161,10 +1156,10 @@ public class BlockShuffleLibrary {
             Material.WARPED_FENCE_GATE,
             Material.WARPED_HANGING_SIGN,
             Material.WARPED_SIGN
-    );
+    ));
 
     //STRUCTURES
-    public static final List<Material> UNDERWATER_MONUMENT = List.of(
+    public static List<Material> UNDERWATER_MONUMENT = new ArrayList<>(new ArrayList<>(Arrays.asList(
             Material.SPONGE,
             Material.WET_SPONGE,
             Material.PRISMARINE_SLAB,
@@ -1179,9 +1174,9 @@ public class BlockShuffleLibrary {
             Material.DARK_PRISMARINE_STAIRS,
             Material.PRISMARINE_SHARD,
             Material.PRISMARINE_CRYSTALS
-    );
+    )));
 
-    public static final List<Material> VILLAGE_ONLY = List.of(
+    public static List<Material> VILLAGE_ONLY = new ArrayList<>(Arrays.asList(
             Material.HAY_BLOCK,
             Material.CARROT,
             Material.POTATO,
@@ -1190,21 +1185,22 @@ public class BlockShuffleLibrary {
             Material.BREWING_STAND,
             Material.BELL,
             Material.CARROT_ON_A_STICK,
-            Material.EMERALD,
+            Emerald,
             Material.BREAD,
             Material.BEETROOT,
             Material.BEETROOT_SEEDS,
             Material.BEETROOT_SOUP
-    );
+    ));
 
     //OTHER CLASS METHODS
 
-    BlockShuffleLibrary(){
+    public static void prepareBlocks(){
         CLAY.addAll(TERRACOTTA);
 
         OCEAN_BASE.addAll(CLAY);
 
         WARM_OCEAN.addAll(OCEAN_BASE);
+        WARM_OCEAN.addAll(TROPICAL_FISHES);
 
         DEEP_OCEAN.addAll(OCEAN_BASE);
 
@@ -1220,6 +1216,10 @@ public class BlockShuffleLibrary {
         SWAMP.addAll(MOSSY_BLOCKS);
         SWAMP.addAll(VINES);
 
+        RED_DESERT.addAll(DESERT);
+
+        BADLANDS.addAll(RED_DESERT);
+
         NETHER.addAll(MUSHROOMS);
 
         OLD_GROWTH_TAIGA.addAll(MUSHROOMS);
@@ -1229,17 +1229,17 @@ public class BlockShuffleLibrary {
         RIVER.addAll(CLAY);
 
         JUNGLE.addAll(MOSSY_BLOCKS);
-        JUNGLE.addAll(MELON);
         JUNGLE.addAll(VINES);
 
-        LUSH_CAVE.addAll(MOSSY_BLOCKS);
-
-        ACACIA_CRAFTS.addAll(MELON);
+        LUSH_CAVE.addAll(MOSSY_BLOCKS);;
 
         BADLANDS.addAll(TERRACOTTA);
 
         FLOWER_FOREST.addAll(FLOWER_FOREST_BASE);
 
         MEADOW.addAll(BEES);
+
+        DESERT.addAll(SAND_BASE);
     }
+
 }
