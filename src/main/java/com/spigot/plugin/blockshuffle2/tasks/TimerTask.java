@@ -55,7 +55,7 @@ public class TimerTask {
                 Bukkit.broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + ChatColor.ITALIC + "Time's up!");
 
                 BlockShuffle2.PLAYERS_TAKING_PART_IN_THE_GAME.stream().forEach(p -> {
-                    if (true)
+                    if (true) //TODO CHANGE THIS
                         p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "Your objective is fulfilled", 5, 60, 15);
                     else {
                         p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "-1 point", 5, 60, 15);
