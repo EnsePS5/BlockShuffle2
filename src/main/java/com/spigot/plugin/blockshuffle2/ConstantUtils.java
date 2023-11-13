@@ -1,6 +1,7 @@
 package com.spigot.plugin.blockshuffle2;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -38,4 +39,8 @@ public class ConstantUtils {
             "ENGINEERS CAN COPY ANY BLOCK OR ITEM IN THEIRS INVENTORY!",
             "THEY DON'T NEED TO EAT AND ARE MUCH MORE DAMAGE RESISTANT THAN OTHERS"
     );
+    public static final ItemStack BLOCK_COPIER = new ItemStack(Material.NAME_TAG);
+    public static final ItemStack MONSTER_EGG_SPAWNER = new ItemStack(Material.EGG);
+    public static final ItemStack WIZARD_BOOK = new ItemStack(Material.WRITTEN_BOOK);
+    public static final ItemStack PICKAXE_SILK_TOUCH = new ItemStack(Material.DIAMOND_PICKAXE);
 }

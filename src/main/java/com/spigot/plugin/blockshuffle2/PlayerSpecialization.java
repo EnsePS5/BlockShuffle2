@@ -47,7 +47,7 @@ public enum PlayerSpecialization {
 
         switch (specialization){
             case MINER: {
-                ItemStack PICKAXE_SILK_TOUCH = new ItemStack(Material.DIAMOND_PICKAXE);
+                ItemStack PICKAXE_SILK_TOUCH = ConstantUtils.PICKAXE_SILK_TOUCH;
                 PICKAXE_SILK_TOUCH.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 1);
                 PICKAXE_SILK_TOUCH.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 PICKAXE_SILK_TOUCH.getItemMeta().setLore(ConstantUtils.PICKAXE_SILK_TOUCH_LORE);
@@ -67,7 +67,7 @@ public enum PlayerSpecialization {
                 break;
             }
             case WIZARD: {
-                ItemStack WIZARD_BOOK = new ItemStack(Material.WRITTEN_BOOK);
+                ItemStack WIZARD_BOOK = ConstantUtils.WIZARD_BOOK;
                 WIZARD_BOOK.addUnsafeEnchantment(Enchantment.LUCK, 1);
                 WIZARD_BOOK.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 WIZARD_BOOK.getItemMeta().setLore(ConstantUtils.WIZARD_BOOK_LORE);
@@ -87,7 +87,7 @@ public enum PlayerSpecialization {
                 break;
             }
             case WARRIOR: {
-                ItemStack MONSTER_EGG_SPAWNER = new ItemStack(Material.EGG);
+                ItemStack MONSTER_EGG_SPAWNER = ConstantUtils.MONSTER_EGG_SPAWNER;
                 MONSTER_EGG_SPAWNER.addUnsafeEnchantment(Enchantment.LUCK, 1);
                 MONSTER_EGG_SPAWNER.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 MONSTER_EGG_SPAWNER.getItemMeta().setLore(ConstantUtils.MONSTER_EGG_SPAWNER_LORE);
@@ -108,7 +108,7 @@ public enum PlayerSpecialization {
                 break;
             }
             case ENGINEER: {
-                ItemStack BLOCK_COPIER = new ItemStack(Material.NAME_TAG);
+                ItemStack BLOCK_COPIER = ConstantUtils.BLOCK_COPIER;
                 BLOCK_COPIER.addUnsafeEnchantment(Enchantment.LUCK, 1);
                 BLOCK_COPIER.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 BLOCK_COPIER.getItemMeta().setLore(ConstantUtils.BLOCK_COPIER_LORE);
@@ -130,5 +130,6 @@ public enum PlayerSpecialization {
         }
         return itemStacksToAdd;
     }
+
 }
 

@@ -31,8 +31,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.spigot.plugin.blockshuffle2.ConstantUtils.WORLD_NAME;
-import static com.spigot.plugin.blockshuffle2.ConstantUtils.WORLD_SIZE;
+import static com.spigot.plugin.blockshuffle2.ConstantUtils.*;
 
 public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
@@ -45,6 +44,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     public static final List<Player> PLAYERS_TAKING_PART_IN_THE_GAME = new ArrayList<>();
     public static final Map<Player, ItemStack> PLAYER_GOALS = new HashMap<>();
     public static final Map<Player, Score> PLAYER_SCORES = new HashMap<>();
+    public static final Map<Player, Boolean> PLAYER_READY = new HashMap<>();
 
     //Score table
     private static Objective objective;
@@ -87,8 +87,8 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     //TODO Powerupy i pomysły na nie
     //TODO Przypisywanie bloków do graczy
     //TODO Startowy loot dla każdego
-    //TODO Specjalizacje graczy - 1 (IN PROGRESS) (WAITS FOR VOTING SYSTEM)
-    //TODO Dodanie specjalnych przedmiotów do graczy - 3
+    //TODO Specjalizacje graczy - 1 (DONE?)
+    //TODO Dodanie specjalnych przedmiotów do graczy - 3 (DONE?)
     @Override
     public void onDisable() {
         // Plugin shutdown logic
@@ -100,8 +100,34 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
             prepareScoreTableOnPluginStart();
             preparePlayersOnPluginStart();
             prepareWorldOnPluginStart();
+            chooseSpecialization();
+
+            return;
         }
         new TimerTask();
+    }
+
+    private static void chooseSpecialization() {
+
+        BLOCK_COPIER.getItemMeta().setLore(BLOCK_COPIER_LORE);
+        BLOCK_COPIER.getItemMeta().setDisplayName(BLOCK_COPIER_NAME);
+        MONSTER_EGG_SPAWNER.getItemMeta().setLore(MONSTER_EGG_SPAWNER_LORE);
+        MONSTER_EGG_SPAWNER.getItemMeta().setDisplayName(MONSTER_EGG_SPAWNER_NAME);
+        WIZARD_BOOK.getItemMeta().setLore(WIZARD_BOOK_LORE);
+        WIZARD_BOOK.getItemMeta().setDisplayName(WIZARD_BOOK_NAME);
+        PICKAXE_SILK_TOUCH.getItemMeta().setLore(PICKAXE_SILK_TOUCH_LORE);
+        PICKAXE_SILK_TOUCH.getItemMeta().setDisplayName(PICKAXE_SILK_TOUCH_NAME);
+
+        for (Player player : PLAYERS_TAKING_PART_IN_THE_GAME){
+
+            player.getInventory().addItem(
+                    BLOCK_COPIER,
+                    MONSTER_EGG_SPAWNER,
+                    WIZARD_BOOK,
+                    PICKAXE_SILK_TOUCH
+            );
+        }
+
     }
 
     private static void prepareWorldOnPluginStart() {
@@ -197,6 +223,9 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         ServerMessage("Starting Players Initialization...");
 
         PLAYERS_TAKING_PART_IN_THE_GAME.addAll(Bukkit.getOnlinePlayers());
+
+        for (Player player : PLAYERS_TAKING_PART_IN_THE_GAME)
+            PLAYER_READY.put(player, false);
 
         PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p -> {
             Score score = objective.getScore(ChatColor.YELLOW + p.getDisplayName() + ChatColor.GOLD + " -> ");

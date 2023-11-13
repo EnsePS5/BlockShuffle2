@@ -32,7 +32,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 }
                 case 1: {
                     if (args[0].equals("terminate")){
-                        System.out.println("TERMINUJ ZADANIE");
+                        System.out.println("TERMINUJ ZADANIE"); //TODO TERMINATE
                     }
                 }
 
