@@ -1,8 +1,12 @@
-package com.spigot.plugin.blockshuffle2;
+package com.spigot.plugin.blockshuffle2.listeners;
 
+import com.spigot.plugin.blockshuffle2.BlockShuffle2;
+import com.spigot.plugin.blockshuffle2.PlayerSpecialization;
+import com.spigot.plugin.blockshuffle2.PowerUpShulkerBox;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.inventory.Inventory;
 
 import static com.spigot.plugin.blockshuffle2.BlockShuffle2.PLAYED_ROUNDS;
 import static com.spigot.plugin.blockshuffle2.BlockShuffle2.PLAYER_READY;
@@ -20,7 +24,6 @@ public class ItemDropListener implements Listener {
             switch (playerDropItemEvent.getItemDrop().getItemStack().getItemMeta().getDisplayName()) {
                 case BLOCK_COPIER_NAME: {
                     playerSpecialization = PlayerSpecialization.ENGINEER;
-                    playerDropItemEvent.setCancelled(true);
                     playerDropItemEvent.getPlayer().getInventory().clear();
 
                     PLAYER_READY.put(playerDropItemEvent.getPlayer(), true);
@@ -30,9 +33,8 @@ public class ItemDropListener implements Listener {
                     );
                     break;
                 }
-                case MONSTER_EGG_SPAWNER_NAME: {
+                case WARRIOR_EGG_SPAWNER_NAME: {
                     playerSpecialization = PlayerSpecialization.WARRIOR;
-                    playerDropItemEvent.setCancelled(true);
                     playerDropItemEvent.getPlayer().getInventory().clear();
 
                     PLAYER_READY.put(playerDropItemEvent.getPlayer(), true);
@@ -44,7 +46,6 @@ public class ItemDropListener implements Listener {
                 }
                 case WIZARD_BOOK_NAME: {
                     playerSpecialization = PlayerSpecialization.WIZARD;
-                    playerDropItemEvent.setCancelled(true);
                     playerDropItemEvent.getPlayer().getInventory().clear();
 
                     PLAYER_READY.put(playerDropItemEvent.getPlayer(), true);
@@ -56,7 +57,6 @@ public class ItemDropListener implements Listener {
                 }
                 case PICKAXE_SILK_TOUCH_NAME: {
                     playerSpecialization = PlayerSpecialization.MINER;
-                    playerDropItemEvent.setCancelled(true);
                     playerDropItemEvent.getPlayer().getInventory().clear();
 
                     PLAYER_READY.put(playerDropItemEvent.getPlayer(), true);
@@ -68,6 +68,8 @@ public class ItemDropListener implements Listener {
                 }
             }
 
+            playerDropItemEvent.getItemDrop().setTicksLived(5999);
+
             if (!PLAYER_READY.containsValue(false)) {
                 PLAYED_ROUNDS++;
                 BlockShuffle2.run();
@@ -76,7 +78,9 @@ public class ItemDropListener implements Listener {
 
         switch (playerDropItemEvent.getItemDrop().getItemStack().getItemMeta().getDisplayName()){
             case POWERUP_SHULKER_BOX_NAME: {
-                //TODO OGARNIJ TO
+                playerDropItemEvent.setCancelled(true);
+                Inventory inventory = PowerUpShulkerBox.createInventory(playerDropItemEvent.getPlayer());
+                playerDropItemEvent.getPlayer().openInventory(inventory);
             }
         }
     }

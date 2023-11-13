@@ -28,8 +28,8 @@ public class ConstantUtils {
             "THEY SEE BRIGHTER AT NIGHT TOO."
     );
     public static final String POWERUP_SHULKER_BOX_NAME = "POWERUPS";
-    public static final String MONSTER_EGG_SPAWNER_NAME = "MONSTER SPAWNER EGG";
-    public static final List<String> MONSTER_EGG_SPAWNER_LORE = List.of(
+    public static final String WARRIOR_EGG_SPAWNER_NAME = "MONSTER SPAWNER EGG";
+    public static final List<String> WARRIOR_EGG_SPAWNER_LORE = List.of(
             "WARRIORS CAN CHOOSE WHAT MOB TO SPAWN AT ANY TIME!",
             "THEY HAVE GRATER CHANCE TO GET MOB DROP THAN BLOCK",
             "AND DEALS GRATER DAMAGE. ADDITIONALLY YOU CAN WITHSTAND MUCH MORE!"
@@ -40,7 +40,10 @@ public class ConstantUtils {
             "THEY DON'T NEED TO EAT AND ARE MUCH MORE DAMAGE RESISTANT THAN OTHERS"
     );
     public static final ItemStack BLOCK_COPIER = new ItemStack(Material.NAME_TAG);
-    public static final ItemStack MONSTER_EGG_SPAWNER = new ItemStack(Material.EGG);
+    public static final ItemStack WARRIOR_EGG_SPAWNER = new ItemStack(Material.EGG);
     public static final ItemStack WIZARD_BOOK = new ItemStack(Material.WRITTEN_BOOK);
     public static final ItemStack PICKAXE_SILK_TOUCH = new ItemStack(Material.DIAMOND_PICKAXE);
+    public static final ItemStack FEATHER_FALLING_BOOTS = new ItemStack(Material.LEATHER_BOOTS);
+    public static final String FEATHER_FALLING_BOOTS_NAME = "MINERS BOOTS";
+
 }

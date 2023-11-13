@@ -1,5 +1,6 @@
 package com.spigot.plugin.blockshuffle2;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -18,7 +19,7 @@ public enum PlayerSpecialization {
 
     PlayerSpecialization(){}
 
-    List<ItemStack> playerEquipment(PlayerSpecialization specialization){
+    public List<ItemStack> playerEquipment(PlayerSpecialization specialization){
 
         ItemMeta itemMeta;
 
@@ -66,14 +67,22 @@ public enum PlayerSpecialization {
         switch (specialization){
             case MINER: {
                 ItemStack PICKAXE_SILK_TOUCH = ConstantUtils.PICKAXE_SILK_TOUCH;
+                itemMeta = PICKAXE_SILK_TOUCH.getItemMeta();
                 PICKAXE_SILK_TOUCH.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 1);
-                PICKAXE_SILK_TOUCH.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                PICKAXE_SILK_TOUCH.getItemMeta().setLore(ConstantUtils.PICKAXE_SILK_TOUCH_LORE);
-                PICKAXE_SILK_TOUCH.getItemMeta().setDisplayName(ConstantUtils.PICKAXE_SILK_TOUCH_NAME);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.setLore(ConstantUtils.PICKAXE_SILK_TOUCH_LORE);
+                itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.PICKAXE_SILK_TOUCH_NAME);
+                PICKAXE_SILK_TOUCH.setItemMeta(itemMeta);
 
-                potionMeta.addCustomEffect(
-                        new PotionEffect(PotionEffectType.SLOW_FALLING, PotionEffect.INFINITE_DURATION, 4)
-                        , false);
+                ItemStack FEATHER_FALLING_BOOTS = ConstantUtils.FEATHER_FALLING_BOOTS;
+                itemMeta = FEATHER_FALLING_BOOTS.getItemMeta();
+                FEATHER_FALLING_BOOTS.addEnchantment(Enchantment.PROTECTION_FALL,4);
+                FEATHER_FALLING_BOOTS.addEnchantment(Enchantment.DURABILITY, 3);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.FEATHER_FALLING_BOOTS_NAME);
+                FEATHER_FALLING_BOOTS.setItemMeta(itemMeta);
+
+
                 potionMeta.addCustomEffect(
                         new PotionEffect(PotionEffectType.FAST_DIGGING, PotionEffect.INFINITE_DURATION, 2)
                         , false);
@@ -86,10 +95,12 @@ public enum PlayerSpecialization {
             }
             case WIZARD: {
                 ItemStack WIZARD_BOOK = ConstantUtils.WIZARD_BOOK;
+                itemMeta = WIZARD_BOOK.getItemMeta();
                 WIZARD_BOOK.addUnsafeEnchantment(Enchantment.LUCK, 1);
-                WIZARD_BOOK.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                WIZARD_BOOK.getItemMeta().setLore(ConstantUtils.WIZARD_BOOK_LORE);
-                WIZARD_BOOK.getItemMeta().setDisplayName(ConstantUtils.WIZARD_BOOK_NAME);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.setLore(ConstantUtils.WIZARD_BOOK_LORE);
+                itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.WIZARD_BOOK_NAME);
+                WIZARD_BOOK.setItemMeta(itemMeta);
 
                 potionMeta.addCustomEffect(
                         new PotionEffect(PotionEffectType.REGENERATION, PotionEffect.INFINITE_DURATION, 2)
@@ -105,11 +116,13 @@ public enum PlayerSpecialization {
                 break;
             }
             case WARRIOR: {
-                ItemStack MONSTER_EGG_SPAWNER = ConstantUtils.MONSTER_EGG_SPAWNER;
-                MONSTER_EGG_SPAWNER.addUnsafeEnchantment(Enchantment.LUCK, 1);
-                MONSTER_EGG_SPAWNER.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                MONSTER_EGG_SPAWNER.getItemMeta().setLore(ConstantUtils.MONSTER_EGG_SPAWNER_LORE);
-                MONSTER_EGG_SPAWNER.getItemMeta().setDisplayName(ConstantUtils.MONSTER_EGG_SPAWNER_NAME);
+                ItemStack WARRIOR_EGG_SPAWNER = ConstantUtils.WARRIOR_EGG_SPAWNER;
+                itemMeta = WARRIOR_EGG_SPAWNER.getItemMeta();
+                WARRIOR_EGG_SPAWNER.addUnsafeEnchantment(Enchantment.LUCK, 1);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.setLore(ConstantUtils.WARRIOR_EGG_SPAWNER_LORE);
+                itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.WARRIOR_EGG_SPAWNER_NAME);
+                WARRIOR_EGG_SPAWNER.setItemMeta(itemMeta);
 
                 potionMeta.addCustomEffect(
                         new PotionEffect(PotionEffectType.HEALTH_BOOST, PotionEffect.INFINITE_DURATION, 2),
@@ -122,15 +135,17 @@ public enum PlayerSpecialization {
                 POTION.setItemMeta(potionMeta);
 
                 itemStacksToAdd.add(POTION);
-                itemStacksToAdd.add(MONSTER_EGG_SPAWNER);
+                itemStacksToAdd.add(WARRIOR_EGG_SPAWNER);
                 break;
             }
             case ENGINEER: {
                 ItemStack BLOCK_COPIER = ConstantUtils.BLOCK_COPIER;
+                itemMeta = BLOCK_COPIER.getItemMeta();
                 BLOCK_COPIER.addUnsafeEnchantment(Enchantment.LUCK, 1);
-                BLOCK_COPIER.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                BLOCK_COPIER.getItemMeta().setLore(ConstantUtils.BLOCK_COPIER_LORE);
-                BLOCK_COPIER.getItemMeta().setDisplayName(ConstantUtils.BLOCK_COPIER_NAME);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.setLore(ConstantUtils.BLOCK_COPIER_LORE);
+                itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.BLOCK_COPIER_NAME);
+                BLOCK_COPIER.setItemMeta(itemMeta);
 
                 potionMeta.addCustomEffect(
                         new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 2)

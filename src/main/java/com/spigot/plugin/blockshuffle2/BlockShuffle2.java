@@ -1,6 +1,8 @@
 package com.spigot.plugin.blockshuffle2;
 
 import com.spigot.plugin.blockshuffle2.commands.CommandManager;
+import com.spigot.plugin.blockshuffle2.listeners.InventoryQuitListener;
+import com.spigot.plugin.blockshuffle2.listeners.ItemDropListener;
 import com.spigot.plugin.blockshuffle2.tasks.TimerTask;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,6 +15,7 @@ import org.bukkit.block.Biome;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,6 +49,9 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     public static final Map<Player, ItemStack> PLAYER_GOALS = new HashMap<>();
     public static final Map<Player, Score> PLAYER_SCORES = new HashMap<>();
     public static final Map<Player, Boolean> PLAYER_READY = new HashMap<>();
+
+    //Power ups content
+    public static final Map<Player, Inventory> PLAYER_POWER_UPS = new HashMap<>();
 
     //Score table
     private static Objective objective;
@@ -82,13 +88,14 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         }
 
         getServer().getPluginManager().registerEvents(new ItemDropListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryQuitListener(), this);
         System.out.println("Initialization Successful");
     }
     //TODO System losowania bloków
     //TODO System głosowania na następną część bloków do dodania - 2 (IN PROGRESS)
     //TODO Powerupy i pomysły na nie
+    //TODO Pozwolić powerupom tylko na wejście do shulkerboxa
     //TODO Przypisywanie bloków do graczy
-    //TODO Startowy loot dla każdego (DONE?)
     @Override
     public void onDisable() {
         // Plugin shutdown logic
@@ -117,10 +124,10 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         itemMeta.setDisplayName(BLOCK_COPIER_NAME);
         bc.setItemMeta(itemMeta);
 
-        ItemStack mes = MONSTER_EGG_SPAWNER;
+        ItemStack mes = WARRIOR_EGG_SPAWNER;
         itemMeta = mes.getItemMeta();
-        itemMeta.setLore(MONSTER_EGG_SPAWNER_LORE);
-        itemMeta.setDisplayName(MONSTER_EGG_SPAWNER_NAME);
+        itemMeta.setLore(WARRIOR_EGG_SPAWNER_LORE);
+        itemMeta.setDisplayName(WARRIOR_EGG_SPAWNER_NAME);
         mes.setItemMeta(itemMeta);
 
         ItemStack wb = WIZARD_BOOK;
