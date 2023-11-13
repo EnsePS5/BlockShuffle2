@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -19,21 +20,38 @@ public enum PlayerSpecialization {
 
     List<ItemStack> playerEquipment(PlayerSpecialization specialization){
 
+        ItemMeta itemMeta;
+
         ItemStack SHEARS = new ItemStack(Material.SHEARS);
+        itemMeta = SHEARS.getItemMeta();
+
         SHEARS.addUnsafeEnchantment(Enchantment.LUCK, 1);
-        SHEARS.addEnchantment(Enchantment.DURABILITY,10);
-        SHEARS.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        SHEARS.getItemMeta().setDisplayName(ConstantUtils.SHEARS_NAME);
+        SHEARS.addEnchantment(Enchantment.DURABILITY,3);
+
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        itemMeta.setDisplayName(ConstantUtils.SHEARS_NAME);
+
+        SHEARS.setItemMeta(itemMeta);
 
         ItemStack STICK_BONE_MEAL = new ItemStack(Material.BONE_MEAL, 64);
+        itemMeta = STICK_BONE_MEAL.getItemMeta();
+
         STICK_BONE_MEAL.addUnsafeEnchantment(Enchantment.LUCK, 1);
-        STICK_BONE_MEAL.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        STICK_BONE_MEAL.getItemMeta().setDisplayName(ConstantUtils.BONE_MEAL_NAME);
+
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        itemMeta.setDisplayName(ConstantUtils.BONE_MEAL_NAME);
+
+        STICK_BONE_MEAL.setItemMeta(itemMeta);
 
         ItemStack POWERUP_SHULKER_BOX = new ItemStack(Material.SHULKER_BOX);
+        itemMeta = POWERUP_SHULKER_BOX.getItemMeta();
+
         POWERUP_SHULKER_BOX.addUnsafeEnchantment(Enchantment.LUCK, 1);
-        POWERUP_SHULKER_BOX.getItemMeta().addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        POWERUP_SHULKER_BOX.getItemMeta().setDisplayName(ConstantUtils.POWERUP_SHULKER_BOX_NAME);
+
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        itemMeta.setDisplayName(ConstantUtils.POWERUP_SHULKER_BOX_NAME);
+
+        POWERUP_SHULKER_BOX.setItemMeta(itemMeta);
 
         List<ItemStack> itemStacksToAdd = new ArrayList<>();
         itemStacksToAdd.add(SHEARS);

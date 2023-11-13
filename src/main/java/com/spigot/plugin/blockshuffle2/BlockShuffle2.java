@@ -14,6 +14,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -80,15 +81,14 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
             throw new NullPointerException("World name should be " + WORLD_NAME);
         }
 
+        getServer().getPluginManager().registerEvents(new ItemDropListener(), this);
         System.out.println("Initialization Successful");
     }
     //TODO System losowania bloków
     //TODO System głosowania na następną część bloków do dodania - 2 (IN PROGRESS)
     //TODO Powerupy i pomysły na nie
     //TODO Przypisywanie bloków do graczy
-    //TODO Startowy loot dla każdego
-    //TODO Specjalizacje graczy - 1 (DONE?)
-    //TODO Dodanie specjalnych przedmiotów do graczy - 3 (DONE?)
+    //TODO Startowy loot dla każdego (DONE?)
     @Override
     public void onDisable() {
         // Plugin shutdown logic
@@ -109,25 +109,57 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
     private static void chooseSpecialization() {
 
-        BLOCK_COPIER.getItemMeta().setLore(BLOCK_COPIER_LORE);
-        BLOCK_COPIER.getItemMeta().setDisplayName(BLOCK_COPIER_NAME);
-        MONSTER_EGG_SPAWNER.getItemMeta().setLore(MONSTER_EGG_SPAWNER_LORE);
-        MONSTER_EGG_SPAWNER.getItemMeta().setDisplayName(MONSTER_EGG_SPAWNER_NAME);
-        WIZARD_BOOK.getItemMeta().setLore(WIZARD_BOOK_LORE);
-        WIZARD_BOOK.getItemMeta().setDisplayName(WIZARD_BOOK_NAME);
-        PICKAXE_SILK_TOUCH.getItemMeta().setLore(PICKAXE_SILK_TOUCH_LORE);
-        PICKAXE_SILK_TOUCH.getItemMeta().setDisplayName(PICKAXE_SILK_TOUCH_NAME);
+        ItemMeta itemMeta;
+
+        ItemStack bc = BLOCK_COPIER;
+        itemMeta = bc.getItemMeta();
+        itemMeta.setLore(BLOCK_COPIER_LORE);
+        itemMeta.setDisplayName(BLOCK_COPIER_NAME);
+        bc.setItemMeta(itemMeta);
+
+        ItemStack mes = MONSTER_EGG_SPAWNER;
+        itemMeta = mes.getItemMeta();
+        itemMeta.setLore(MONSTER_EGG_SPAWNER_LORE);
+        itemMeta.setDisplayName(MONSTER_EGG_SPAWNER_NAME);
+        mes.setItemMeta(itemMeta);
+
+        ItemStack wb = WIZARD_BOOK;
+        itemMeta = wb.getItemMeta();
+        itemMeta.setLore(WIZARD_BOOK_LORE);
+        itemMeta.setDisplayName(WIZARD_BOOK_NAME);
+        wb.setItemMeta(itemMeta);
+
+        ItemStack pst = PICKAXE_SILK_TOUCH;
+        itemMeta = pst.getItemMeta();
+        itemMeta.setLore(PICKAXE_SILK_TOUCH_LORE);
+        itemMeta.setDisplayName(PICKAXE_SILK_TOUCH_NAME);
+        pst.setItemMeta(itemMeta);
+        Result result = new Result(bc, mes, wb, pst);
 
         for (Player player : PLAYERS_TAKING_PART_IN_THE_GAME){
 
             player.getInventory().addItem(
-                    BLOCK_COPIER,
-                    MONSTER_EGG_SPAWNER,
-                    WIZARD_BOOK,
-                    PICKAXE_SILK_TOUCH
+                    result.bc,
+                    result.mes,
+                    result.wb,
+                    result.pst
             );
         }
 
+    }
+
+    private static class Result {
+        public final ItemStack bc;
+        public final ItemStack mes;
+        public final ItemStack wb;
+        public final ItemStack pst;
+
+        public Result(ItemStack bc, ItemStack mes, ItemStack wb, ItemStack pst) {
+            this.bc = bc;
+            this.mes = mes;
+            this.wb = wb;
+            this.pst = pst;
+        }
     }
 
     private static void prepareWorldOnPluginStart() {
