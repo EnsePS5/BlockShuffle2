@@ -9,21 +9,25 @@ import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class TimerTask {
 
-    public TimerTask(){
-        new BukkitRunnable() {
+    private BukkitTask task = null;
+    final int[] timeLeft = {0};
 
-            int timeLeft = ConstantUtils.ROUND_TIME_IN_SECONDS;
-            int minutes = timeLeft /60;
-            int seconds = timeLeft %60;
+    public TimerTask(){
+         task = new BukkitRunnable() {
+
             @Override
-            public void run() {
+             public void run() {
+                timeLeft[0] = ConstantUtils.ROUND_TIME_IN_SECONDS;
+                int minutes = timeLeft[0] /60;
+                int seconds = timeLeft[0] %60;
 
                 while (!(minutes == 0 && seconds == 0)) {
-                    minutes = timeLeft / 60;
-                    seconds = timeLeft % 60;
+                    minutes = timeLeft[0] / 60;
+                    seconds = timeLeft[0] % 60;
 
                     for (Player player : BlockShuffle2.PLAYERS_TAKING_PART_IN_THE_GAME) {
                         if (minutes >= 3) {
@@ -45,7 +49,7 @@ public class TimerTask {
 
                     try {
                         Thread.sleep(1000);
-                        timeLeft--;
+                        timeLeft[0]--;
 
                     } catch (InterruptedException e) {
                         return;
@@ -55,14 +59,33 @@ public class TimerTask {
                 Bukkit.broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + ChatColor.ITALIC + "Time's up!");
 
                 BlockShuffle2.PLAYERS_TAKING_PART_IN_THE_GAME.stream().forEach(p -> {
-                    if (true) //TODO CHANGE THIS
+                    if (BlockShuffle2.PLAYER_READY.get(p))
                         p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "Your objective is fulfilled", 5, 60, 15);
                     else {
                         p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "-1 point", 5, 60, 15);
                         p.playSound(p.getLocation(),Sound.ENTITY_WITCH_DEATH,.6f,.6f);
+                        BlockShuffle2.PLAYER_READY.put(p, true);
                     }
                 });
+                if (BlockShuffle2.VOTING){
+                    BlockShuffle2.voteCount();
+                    return;
+                }
+
+                if (BlockShuffle2.PLAYED_ROUNDS <= ConstantUtils.MAX_ROUNDS){
+                    BlockShuffle2.VOTING = true;
+                    BlockShuffle2.PLAYED_ROUNDS++;
+                    BlockShuffle2.run();
+                }
             }
-        }.runTaskAsynchronously(BlockShuffle2.getPlugin(BlockShuffle2.class));
+        }.runTask(BlockShuffle2.getPlugin(BlockShuffle2.class));
+    }
+
+    public BukkitTask getTask() {
+        return task;
+    }
+
+    public void setTimeLeft(int time) {
+        timeLeft[0] = time;
     }
 }

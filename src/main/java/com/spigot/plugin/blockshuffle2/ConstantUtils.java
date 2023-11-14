@@ -45,5 +45,6 @@ public class ConstantUtils {
     public static final ItemStack PICKAXE_SILK_TOUCH = new ItemStack(Material.DIAMOND_PICKAXE);
     public static final ItemStack FEATHER_FALLING_BOOTS = new ItemStack(Material.LEATHER_BOOTS);
     public static final String FEATHER_FALLING_BOOTS_NAME = "MINERS BOOTS";
-
+    public static final Material LEFT_CHOICE = Material.GREEN_WOOL;
+    public static final Material RIGHT_CHOICE = Material.RED_WOOL;
 }
