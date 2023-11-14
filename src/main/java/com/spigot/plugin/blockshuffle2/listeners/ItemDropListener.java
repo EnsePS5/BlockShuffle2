@@ -3,6 +3,7 @@ package com.spigot.plugin.blockshuffle2.listeners;
 import com.spigot.plugin.blockshuffle2.BlockShuffle2;
 import com.spigot.plugin.blockshuffle2.PlayerSpecialization;
 import com.spigot.plugin.blockshuffle2.PowerUpShulkerBox;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -100,6 +101,9 @@ public class ItemDropListener implements Listener {
                         playerDropItemEvent.getPlayer().getInventory().setItem(counter[0], i);
                         counter[0]++;
                     });
+
+                    playerDropItemEvent.getPlayer().sendMessage(
+                            playerDropItemEvent.getPlayer().getDisplayName() + ChatColor.DARK_RED + " voted for " + VOTING_BIOMES[1]);
                     
                     VOTE_COUNT++;
                     PLAYER_READY.put(playerDropItemEvent.getPlayer(), false);
@@ -114,6 +118,9 @@ public class ItemDropListener implements Listener {
                         playerDropItemEvent.getPlayer().getInventory().setItem(counter[0], i);
                         counter[0]++;
                     });
+
+                    playerDropItemEvent.getPlayer().sendMessage(
+                            playerDropItemEvent.getPlayer().getDisplayName() + ChatColor.DARK_GREEN + " voted for " + VOTING_BIOMES[0]);
 
                     VOTE_COUNT--;
                     PLAYER_READY.put(playerDropItemEvent.getPlayer(), false);

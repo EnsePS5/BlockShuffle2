@@ -14,18 +14,21 @@ import org.bukkit.scheduler.BukkitTask;
 public class TimerTask {
 
     private BukkitTask task = null;
-    final int[] timeLeft = {0};
+    private final boolean[] isCancelled = {false};
+    private final int[] timeLeft = {ConstantUtils.ROUND_TIME_IN_SECONDS};
 
     public TimerTask(){
-         task = new BukkitRunnable() {
+
+        this.isCancelled[0] = false;
+        task = new BukkitRunnable() {
 
             @Override
              public void run() {
-                timeLeft[0] = ConstantUtils.ROUND_TIME_IN_SECONDS;
+
                 int minutes = timeLeft[0] /60;
                 int seconds = timeLeft[0] %60;
 
-                while (!(minutes == 0 && seconds == 0)) {
+                while (!(minutes == 0 && seconds == 0) && !isCancelled[0]) {
                     minutes = timeLeft[0] / 60;
                     seconds = timeLeft[0] % 60;
 
@@ -56,9 +59,19 @@ public class TimerTask {
                     }
                 }
 
+                if (isCancelled[0]){
+                    isCancelled[0] = false;
+                    return;
+                }
+
+                if (BlockShuffle2.VOTING){
+                    BlockShuffle2.voteCount();
+                    return;
+                }
+
                 Bukkit.broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + ChatColor.ITALIC + "Time's up!");
 
-                BlockShuffle2.PLAYERS_TAKING_PART_IN_THE_GAME.stream().forEach(p -> {
+                BlockShuffle2.PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p -> {
                     if (BlockShuffle2.PLAYER_READY.get(p))
                         p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "Your objective is fulfilled", 5, 60, 15);
                     else {
@@ -67,9 +80,11 @@ public class TimerTask {
                         BlockShuffle2.PLAYER_READY.put(p, true);
                     }
                 });
-                if (BlockShuffle2.VOTING){
-                    BlockShuffle2.voteCount();
-                    return;
+
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
 
                 if (BlockShuffle2.PLAYED_ROUNDS <= ConstantUtils.MAX_ROUNDS){
@@ -77,12 +92,14 @@ public class TimerTask {
                     BlockShuffle2.PLAYED_ROUNDS++;
                     BlockShuffle2.run();
                 }
+                this.cancel();
             }
-        }.runTask(BlockShuffle2.getPlugin(BlockShuffle2.class));
+        }.runTaskAsynchronously(BlockShuffle2.getPlugin(BlockShuffle2.class));
     }
 
-    public BukkitTask getTask() {
-        return task;
+    public void cancel() {
+        task.cancel();
+        this.isCancelled[0] = true;
     }
 
     public void setTimeLeft(int time) {

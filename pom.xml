@@ -6,7 +6,7 @@
 
     <groupId>com.spigot.plugin</groupId>
     <artifactId>BlockShuffle_2.0</artifactId>
-    <version>0.5.0 TEST_Voteing</version>
+    <version>0.5.0.13 TEST_Voteing</version>
     <packaging>jar</packaging>
 
     <name>BlockShuffle_2.0</name>

@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.spigot.plugin.blockshuffle2.ConstantUtils.*;
 
@@ -85,8 +84,16 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         if (votingBiome == null){
             randomBiome = (int)(Math.random()*VOTING_BIOMES.length);
             BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(VOTING_BIOMES[randomBiome]));
+
+            PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p ->
+                    p.sendTitle(ChatColor.WHITE + "TIE!",ChatColor.LIGHT_PURPLE + "Both biomes are being added!",5,60,15));
+            System.out.println("TIE!" + " Both biomes are being added!");
         }else {
             BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(votingBiome));
+            PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p ->
+                    p.sendTitle(ChatColor.WHITE + votingBiome.getKey().getKey() + " WINS!",
+                            ChatColor.LIGHT_PURPLE + votingBiome.getKey().getKey() + " is being added!",5,60,15));
+            System.out.println(votingBiome.getKey().getKey() + " WINS! " + votingBiome.getKey().getKey() + " is being added!");
         }
         run();
     }
@@ -138,10 +145,12 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         System.out.println("Initialization Successful");
     }
     //TODO System losowania bloków (DONE?)
-    //TODO System głosowania na następną część bloków do dodania (NEXT IN LINE)
+    //TODO System głosowania na następną część bloków do dodania (DONE?)
     //TODO Powerupy i pomysły na nie
     //TODO Pozwolić powerupom tylko na wejście do shulkerboxa
     //TODO Przypisywanie bloków do graczy (DONE?)
+    //TODO Loggi (IN PROGRESS)
+    //TODO Dodać info o bloku do szukania pod tabem
     @Override
     public void onDisable() {
         // Plugin shutdown logic
@@ -162,21 +171,26 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
             prepareVotingForPlayers();
 
-            timerTask.getTask().cancel();
+            timerTask.cancel();
             timerTask = new TimerTask();
-            timerTask.setTimeLeft(60);
+            timerTask.setTimeLeft(30);
 
             return;
         }
 
         if (PLAYED_ROUNDS < MAX_ROUNDS) {
 
+            System.out.println("Round " + PLAYED_ROUNDS + "!\nBlocks in game -> " + BlocksInGame);
+
             maxScoreToGet = PLAYERS_TAKING_PART_IN_THE_GAME.size();
 
             objective.setDisplayName(ChatColor.GOLD + "Points/Round " + PLAYED_ROUNDS);
             assignRandomBlocksToPlayers();
 
-            timerTask.getTask().cancel();
+            if (PLAYED_ROUNDS != 1) {
+                timerTask.cancel();
+            }
+
             timerTask = new TimerTask();
 
             return;
@@ -185,7 +199,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         if (PLAYED_ROUNDS == MAX_ROUNDS){
 
             objective.setDisplayName(ChatColor.GOLD + "Points/" + ChatColor.RED + "Last Round");
-            //TODO WINNIG CONDITION
+            //TODO WINNING CONDITION
         }
     }
 
@@ -209,10 +223,12 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         index = (int)Math.random() * biomesTemp.size();
 
         itemMeta = RIGHT_CHOICE.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.DARK_GREEN + biomesTemp.get(index).toString().toUpperCase());
+        itemMeta.setDisplayName(ChatColor.DARK_RED + biomesTemp.get(index).toString().toUpperCase());
         RIGHT_CHOICE.setItemMeta(itemMeta);
 
         VOTING_BIOMES[1] = biomesTemp.get(index);
+
+        System.out.println("Voting between " + VOTING_BIOMES[0] + " and " + VOTING_BIOMES[1]);
 
         AllBiomesInBorder.remove(biomesTemp.get(index));
         biomesTemp.remove(index);
@@ -226,11 +242,14 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
                 items.put(counter[0], item);
                 counter[0]++;
             });
+            player.sendMessage(ChatColor.YELLOW + "Press 'Q' on wool of your choice!");
+            player.sendTitle(ChatColor.LIGHT_PURPLE + "Vote for biome!",
+                    ChatColor.DARK_GREEN + "" + VOTING_BIOMES[0] + " vs " + ChatColor.DARK_RED + VOTING_BIOMES[1],5,60,15);
 
             PLAYER_INVENTORY.put(player, items);
             player.getInventory().clear();
-            player.getInventory().addItem().put(0, LEFT_CHOICE);
-            player.getInventory().addItem().put(9, RIGHT_CHOICE);
+            player.getInventory().setItem(1, LEFT_CHOICE);
+            player.getInventory().setItem(7, RIGHT_CHOICE);
 
             counter[0] = 0;
         }
