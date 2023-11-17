@@ -15,7 +15,6 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event){
         event.setKeepInventory(true);
-        potionEffects.clear();
         potionEffects = (List<PotionEffect>) event.getEntity().getActivePotionEffects();
     }
 

@@ -1,4 +1,4 @@
-package com.spigot.plugin.blockshuffle2;
+package com.spigot.plugin.blockshuffle2.libraries;
 
 import org.bukkit.Material;
 

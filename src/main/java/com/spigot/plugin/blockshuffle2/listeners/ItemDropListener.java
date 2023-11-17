@@ -2,7 +2,7 @@ package com.spigot.plugin.blockshuffle2.listeners;
 
 import com.spigot.plugin.blockshuffle2.BlockShuffle2;
 import com.spigot.plugin.blockshuffle2.PlayerSpecialization;
-import com.spigot.plugin.blockshuffle2.PowerUpShulkerBox;
+import com.spigot.plugin.blockshuffle2.powerups.PowerUpShulkerBox;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -131,7 +131,7 @@ public class ItemDropListener implements Listener {
             }
 
             if (!PLAYER_READY.containsValue(true)){
-                BlockShuffle2.voteCount();
+                timerTask.cancel();
             }
         }
     }

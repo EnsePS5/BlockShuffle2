@@ -1,7 +1,8 @@
 package com.spigot.plugin.blockshuffle2;
 
 import com.spigot.plugin.blockshuffle2.commands.CommandManager;
-import com.spigot.plugin.blockshuffle2.listeners.InventoryQuitListener;
+import com.spigot.plugin.blockshuffle2.libraries.BlockShuffleLibrary;
+import com.spigot.plugin.blockshuffle2.listeners.InventoryListener;
 import com.spigot.plugin.blockshuffle2.listeners.ItemDropListener;
 import com.spigot.plugin.blockshuffle2.listeners.ItemGetListener;
 import com.spigot.plugin.blockshuffle2.listeners.PlayerListener;
@@ -11,6 +12,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
 import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.WorldBorder;
@@ -64,7 +67,8 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     public static final Map<Player, Map<Integer, ItemStack>> PLAYER_INVENTORY = new HashMap<>();
 
     //Score table
-    private static Objective objective;
+    private static Objective objectivePoints;
+    private static Objective objectiveItems;
     private static Scoreboard scoreboard;
     public static int maxScoreToGet = 0;
 
@@ -72,30 +76,37 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     private static WorldBorder worldBorder;
     private static final List<Chunk> AllChunksInBorder = new ArrayList<>();
     private static final Set<Biome> AllBiomesInBorder = new HashSet<>();
-    private static Map<Biome, Set<Material>> BLOCKS_TAKING_PART_IN_THE_GAME;
+    private static Map<NamespacedKey, Set<Material>> BLOCKS_TAKING_PART_IN_THE_GAME;
     private static List<Material> BlocksInGame = new ArrayList<>();
     private static final PlayableBlocks playableBlocksManager = PlayableBlocks.getInstance();
     public static final Map<Player, PlayerSpecialization> PLAYERS_SPECS = new HashMap<>();
 
     public static void voteWinner(Biome votingBiome) {
 
-        int randomBiome = 0;
 
         if (votingBiome == null){
-            randomBiome = (int)(Math.random()*VOTING_BIOMES.length);
-            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(VOTING_BIOMES[randomBiome]));
+
+            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(VOTING_BIOMES[0].getKey()));
+            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(VOTING_BIOMES[1].getKey()));
 
             PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p ->
                     p.sendTitle(ChatColor.WHITE + "TIE!",ChatColor.LIGHT_PURPLE + "Both biomes are being added!",5,60,15));
             System.out.println("TIE!" + " Both biomes are being added!");
+
+            BLOCKS_TAKING_PART_IN_THE_GAME.remove(VOTING_BIOMES[0].getKey());
+            BLOCKS_TAKING_PART_IN_THE_GAME.remove(VOTING_BIOMES[1].getKey());
+
         }else {
-            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(votingBiome));
+            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(votingBiome.getKey()));
             PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p ->
                     p.sendTitle(ChatColor.WHITE + votingBiome.getKey().getKey() + " WINS!",
                             ChatColor.LIGHT_PURPLE + votingBiome.getKey().getKey() + " is being added!",5,60,15));
             System.out.println(votingBiome.getKey().getKey() + " WINS! " + votingBiome.getKey().getKey() + " is being added!");
+
+            BLOCKS_TAKING_PART_IN_THE_GAME.remove(votingBiome.getKey());
         }
-        run();
+
+        System.out.println("Current biomes left in pool -> " + BLOCKS_TAKING_PART_IN_THE_GAME);
     }
 
     public static void voteCount() {
@@ -110,10 +121,26 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
             BlockShuffle2.voteWinner(VOTING_BIOMES[1]);
             return;
         }
-        if (VOTE_COUNT == 0){
-            BlockShuffle2.voteWinner(null);
-        }
+        BlockShuffle2.voteWinner(null);
 
+    }
+
+    public static void terminate() {
+        PLAYER_SCORES.clear();
+        PLAYED_ROUNDS = 0;
+        PLAYER_INVENTORY.clear();
+        PLAYERS_TAKING_PART_IN_THE_GAME.clear();
+        PLAYER_READY.clear();
+        PLAYER_POWER_UPS.clear();
+        PLAYERS_SPECS.clear();
+        AllBiomesInBorder.clear();
+        AllChunksInBorder.clear();
+        timerTask.cancel();
+        BLOCKS_TAKING_PART_IN_THE_GAME.clear();
+        BlocksInGame.clear();
+        VOTING = false;
+
+        ServerMessageUrgent("GAME TERMINATED!");
     }
 
     @Override
@@ -139,16 +166,13 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         }
 
         getServer().getPluginManager().registerEvents(new ItemDropListener(), this);
-        getServer().getPluginManager().registerEvents(new InventoryQuitListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new ItemGetListener(), this);
         System.out.println("Initialization Successful");
     }
-    //TODO System losowania bloków (DONE?)
-    //TODO System głosowania na następną część bloków do dodania (DONE?)
-    //TODO Powerupy i pomysły na nie
-    //TODO Pozwolić powerupom tylko na wejście do shulkerboxa
-    //TODO Przypisywanie bloków do graczy (DONE?)
+    //TODO Powerupy i pomysły na nie (IN PROGRESS)
+    //TODO Pozwolić powerupom tylko na wejście do shulkerboxa (IN PROGRESS)
     //TODO Loggi (IN PROGRESS)
     //TODO Dodać info o bloku do szukania pod tabem
     @Override
@@ -169,22 +193,32 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
         if (VOTING){
 
+            if (BLOCKS_TAKING_PART_IN_THE_GAME.size() <= 2){
+                VOTING = false;
+                return;
+            }
+
             prepareVotingForPlayers();
 
             timerTask.cancel();
             timerTask = new TimerTask();
-            timerTask.setTimeLeft(30);
+            timerTask.setTimeLeft(40);
 
             return;
         }
 
-        if (PLAYED_ROUNDS < MAX_ROUNDS) {
+
+        if (PLAYED_ROUNDS <= MAX_ROUNDS) {
 
             System.out.println("Round " + PLAYED_ROUNDS + "!\nBlocks in game -> " + BlocksInGame);
 
-            maxScoreToGet = PLAYERS_TAKING_PART_IN_THE_GAME.size();
+            if (PLAYED_ROUNDS == MAX_ROUNDS){
+                objectivePoints.setDisplayName(ChatColor.GOLD + "Points/" + ChatColor.RED + "Last Round");
+            }else {
+                objectivePoints.setDisplayName(ChatColor.GOLD + "Points/Round " + PLAYED_ROUNDS);
+            }
 
-            objective.setDisplayName(ChatColor.GOLD + "Points/Round " + PLAYED_ROUNDS);
+            maxScoreToGet = PLAYERS_TAKING_PART_IN_THE_GAME.size();
             assignRandomBlocksToPlayers();
 
             if (PLAYED_ROUNDS != 1) {
@@ -195,12 +229,39 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
             return;
         }
+        //WINNING CONDITION
 
-        if (PLAYED_ROUNDS == MAX_ROUNDS){
+        int maxScore = -999;
+        Player winningPlayer = null;
 
-            objective.setDisplayName(ChatColor.GOLD + "Points/" + ChatColor.RED + "Last Round");
-            //TODO WINNING CONDITION
+        for (Player player : PLAYER_SCORES.keySet()){
+            if (PLAYER_SCORES.get(player).getScore() > maxScore){
+                maxScore = PLAYER_SCORES.get(player).getScore();
+                winningPlayer = player;
+            }//TODO overtime
         }
+
+        final Player champion = winningPlayer;
+
+        PLAYERS_TAKING_PART_IN_THE_GAME.forEach(player -> {
+            player.sendTitle(ChatColor.GOLD + champion.getDisplayName() + " WINS!", "Congratulations!", 5, 80, 15);
+
+            if (player != champion){
+                player.playSound(player,Sound.ENTITY_CREEPER_HURT,.6f,.6f);
+                player.playSound(player,Sound.ENTITY_VEX_CHARGE, .8f,.3f);
+                player.playSound(player,Sound.ENTITY_VEX_HURT,.2f,.8f);
+            }
+
+            player.getInventory().clear();
+            player.getActivePotionEffects().clear();
+        });
+
+        champion.playSound(champion.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 1.5f, 1.5f);
+        champion.playSound(champion.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE,.45f,.65f);
+        champion.spawnParticle(Particle.TOTEM,champion.getLocation(),250);
+        champion.spawnParticle(Particle.FLASH,champion.getLocation().add(0,10,0),100);
+
+        terminate();
     }
 
     private static void prepareVotingForPlayers() {
@@ -217,7 +278,6 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
         VOTING_BIOMES[0] = biomesTemp.get(index);
 
-        AllBiomesInBorder.remove(biomesTemp.get(index));
         biomesTemp.remove(index);
 
         index = (int)Math.random() * biomesTemp.size();
@@ -229,9 +289,6 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         VOTING_BIOMES[1] = biomesTemp.get(index);
 
         System.out.println("Voting between " + VOTING_BIOMES[0] + " and " + VOTING_BIOMES[1]);
-
-        AllBiomesInBorder.remove(biomesTemp.get(index));
-        biomesTemp.remove(index);
 
         Map<Integer,ItemStack> items = new HashMap<>();
         final int[] counter = {0};
@@ -258,11 +315,16 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     private static void assignRandomBlocksToPlayers() {
 
         Material materialToAssign;
+        int index = 0;
 
         for (Player player : PLAYERS_TAKING_PART_IN_THE_GAME){
 
-            materialToAssign = BlocksInGame.get((int)(Math.random() * BlocksInGame.size()));
+            index = (int)(Math.random() * BlocksInGame.size());
+
+            materialToAssign = BlocksInGame.get(index);
             PLAYER_GOALS.put(player, materialToAssign);
+            System.out.println(player.getDisplayName() + " -> " + materialToAssign + "(" + index + " from " + BlocksInGame.size() + ")");
+
             PLAYER_READY.put(player, false);
 
             player.sendMessage(ChatColor.YELLOW + "Item to obtain is -> " + PLAYER_GOALS.get(player));
@@ -383,7 +445,8 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         }
 
         scoreboard = scoreboardManager.getNewScoreboard();
-        objective = scoreboard.registerNewObjective("points", Criteria.DUMMY ,"dummy");
+        objectivePoints = scoreboard.registerNewObjective("points", Criteria.DUMMY ,"dummy");
+        objectiveItems = scoreboard.registerNewObjective("items", Criteria.DUMMY, "dummy"); //TODO dodać item pod tabem
 
     }
 
@@ -392,8 +455,8 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         System.out.println("Starting Table Initialization...");
         ServerMessage("Starting Table Initialization...");
 
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(ChatColor.GOLD + "Points/Round 1");
+        objectivePoints.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objectivePoints.setDisplayName(ChatColor.GOLD + "Points/Round 1");
 
         System.out.println("Table Initialized Successful");
         ServerMessage("Table Initialized Successfully");
@@ -410,12 +473,13 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
             PLAYER_READY.put(player, false);
 
         PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p -> {
-            Score score = objective.getScore(ChatColor.YELLOW + p.getDisplayName() + ChatColor.GOLD + " -> ");
+            Score score = objectivePoints.getScore(ChatColor.YELLOW + p.getDisplayName() + ChatColor.GOLD + " -> ");
             score.setScore(0);
 
             PLAYER_SCORES.put(p, score);
 
             p.setScoreboard(scoreboard);
+            p.getInventory().clear();
         });
 
         System.out.println("Players Initialized Successful");

@@ -91,6 +91,7 @@ public enum PlayerSpecialization {
 
                 itemStacksToAdd.add(POTION);
                 itemStacksToAdd.add(PICKAXE_SILK_TOUCH);
+                itemStacksToAdd.add(FEATHER_FALLING_BOOTS);
                 break;
             }
             case WIZARD: {
@@ -151,7 +152,7 @@ public enum PlayerSpecialization {
                         new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, PotionEffect.INFINITE_DURATION, 2)
                         , false);
                 potionMeta.addCustomEffect(
-                        new PotionEffect(PotionEffectType.SATURATION, PotionEffect.INFINITE_DURATION, 2)
+                        new PotionEffect(PotionEffectType.SPEED, PotionEffect.INFINITE_DURATION, 1)
                         , false);
                 potionMeta.setDisplayName(specialization + " PERK");
                 POTION.setItemMeta(potionMeta);

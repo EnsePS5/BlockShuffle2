@@ -59,13 +59,23 @@ public class TimerTask {
                     }
                 }
 
-                if (isCancelled[0]){
+                if (isCancelled[0] && !BlockShuffle2.VOTING){
                     isCancelled[0] = false;
                     return;
                 }
 
                 if (BlockShuffle2.VOTING){
+                    isCancelled[0] = false;
                     BlockShuffle2.voteCount();
+
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    BlockShuffle2.run();
+
                     return;
                 }
 
@@ -75,8 +85,10 @@ public class TimerTask {
                     if (BlockShuffle2.PLAYER_READY.get(p))
                         p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "Your objective is fulfilled", 5, 60, 15);
                     else {
-                        p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "-1 point", 5, 60, 15);
+                        p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "-" + BlockShuffle2.maxScoreToGet + " point(s)", 5, 60, 15);
                         p.playSound(p.getLocation(),Sound.ENTITY_WITCH_DEATH,.6f,.6f);
+                        BlockShuffle2.PLAYER_SCORES.get(p).setScore(
+                                BlockShuffle2.PLAYER_SCORES.get(p).getScore() - BlockShuffle2.maxScoreToGet);
                         BlockShuffle2.PLAYER_READY.put(p, true);
                     }
                 });

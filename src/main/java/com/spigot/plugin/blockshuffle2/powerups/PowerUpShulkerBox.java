@@ -1,5 +1,6 @@
-package com.spigot.plugin.blockshuffle2;
+package com.spigot.plugin.blockshuffle2.powerups;
 
+import com.spigot.plugin.blockshuffle2.BlockShuffle2;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

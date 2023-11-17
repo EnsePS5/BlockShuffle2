@@ -31,11 +31,21 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     break;
                 }
                 case 1: {
-                    if (args[0].equals("terminate")){
-                        System.out.println("TERMINUJ ZADANIE"); //TODO TERMINATE
+                    switch (args[0]){
+                        case "terminate" : {
+                            BlockShuffle2.terminate();
+                            break;
+                        }
                     }
                 }
-
+                case 2: {
+                    switch (args[0]){
+                        case "timeSet" : {
+                            BlockShuffle2.timerTask.setTimeLeft(Integer.parseInt(args[1]));
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -49,13 +59,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
         if (args.length == 1){
             adders.add("terminate");
+            adders.add("timeSet");
         }
 
         return adders;
-    }
-
-    public boolean isBiomeInBorder(Biome biome){
-        return Bukkit.dispatchCommand(console, "locate biome minecraft:" + biome.name().toLowerCase());
-        //TODO wyodrębnić biomy które są w zasięgu borderu kiedy serwer się odpala.
     }
 }

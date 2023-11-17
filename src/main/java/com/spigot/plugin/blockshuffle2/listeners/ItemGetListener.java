@@ -39,6 +39,8 @@ public class ItemGetListener implements Listener {
 
                 BlockShuffle2.PLAYERS_TAKING_PART_IN_THE_GAME.forEach(
                         p -> p.playSound(p.getLocation(), Sound.ITEM_TOTEM_USE, 0.5f, 0.5f));
+
+                //TODO system przyznawania powerupów
             }
 
             if (!BlockShuffle2.PLAYER_READY.values().contains(false)){

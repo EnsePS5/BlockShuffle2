@@ -1,11 +1,12 @@
 package com.spigot.plugin.blockshuffle2;
 
+import com.spigot.plugin.blockshuffle2.libraries.BlockShuffleLibrary;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Biome;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -291,10 +292,10 @@ public class PlayableBlocks {
         return BIOME_BY_BLOCK_MAP;
     }
 
-    public Map<Biome, Set<Material>> filterOutUnusedBiomes(Set<Biome> biomes){
-        Map<Biome, Set<Material>> result = new HashMap<>();
+    public Map<NamespacedKey, Set<Material>> filterOutUnusedBiomes(Set<Biome> biomes){
+        Map<NamespacedKey, Set<Material>> result = new HashMap<>();
 
-        biomes.forEach(b -> result.put(b, BIOME_BY_BLOCK_MAP.get(b)));
+        biomes.forEach(b -> result.put(b.getKey(), BIOME_BY_BLOCK_MAP.get(b)));
 
         return result;
     }
