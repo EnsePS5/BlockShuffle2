@@ -17,18 +17,18 @@ public class TimerTask {
     private final boolean[] isCancelled = {false};
     private final int[] timeLeft = {ConstantUtils.ROUND_TIME_IN_SECONDS};
 
-    public TimerTask(){
+    public boolean isVotingTimerTask;
 
-        this.isCancelled[0] = false;
+    public TimerTask(){
         task = new BukkitRunnable() {
 
             @Override
              public void run() {
 
-                int minutes = timeLeft[0] /60;
-                int seconds = timeLeft[0] %60;
+                int minutes;
+                int seconds;
 
-                while (!(minutes == 0 && seconds == 0) && !isCancelled[0]) {
+                do {
                     minutes = timeLeft[0] / 60;
                     seconds = timeLeft[0] % 60;
 
@@ -53,19 +53,18 @@ public class TimerTask {
                     try {
                         Thread.sleep(1000);
                         timeLeft[0]--;
-
                     } catch (InterruptedException e) {
                         return;
                     }
-                }
+                } while (!(minutes == 0 && seconds == 0) && !isCancelled[0]);
 
-                if (isCancelled[0] && !BlockShuffle2.VOTING){
+                if (isCancelled[0] && !isVotingTimerTask) {
                     isCancelled[0] = false;
                     return;
                 }
 
-                if (BlockShuffle2.VOTING){
-                    isCancelled[0] = false;
+                if (BlockShuffle2.VOTING) {
+
                     BlockShuffle2.voteCount();
 
                     try {
@@ -73,9 +72,7 @@ public class TimerTask {
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-
                     BlockShuffle2.run();
-
                     return;
                 }
 
@@ -84,7 +81,7 @@ public class TimerTask {
                 BlockShuffle2.PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p -> {
                     if (BlockShuffle2.PLAYER_READY.get(p))
                         p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "Your objective is fulfilled", 5, 60, 15);
-                    else {
+                    else if (!BlockShuffle2.PLAYER_READY.get(p)){
                         p.sendTitle((ChatColor.DARK_RED + "" + ChatColor.BOLD + "TIME'S UP!"), "-" + BlockShuffle2.maxScoreToGet + " point(s)", 5, 60, 15);
                         p.playSound(p.getLocation(),Sound.ENTITY_WITCH_DEATH,.6f,.6f);
                         BlockShuffle2.PLAYER_SCORES.get(p).setScore(

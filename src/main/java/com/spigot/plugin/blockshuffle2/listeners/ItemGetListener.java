@@ -43,7 +43,7 @@ public class ItemGetListener implements Listener {
                 //TODO system przyznawania powerupów
             }
 
-            if (!BlockShuffle2.PLAYER_READY.values().contains(false)){
+            if (!BlockShuffle2.PLAYER_READY.containsValue(false)){
                 BlockShuffle2.VOTING = true;
                 BlockShuffle2.PLAYED_ROUNDS++;
                 BlockShuffle2.run();

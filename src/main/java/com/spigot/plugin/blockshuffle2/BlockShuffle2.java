@@ -3,7 +3,7 @@ package com.spigot.plugin.blockshuffle2;
 import com.spigot.plugin.blockshuffle2.commands.CommandManager;
 import com.spigot.plugin.blockshuffle2.libraries.BlockShuffleLibrary;
 import com.spigot.plugin.blockshuffle2.listeners.InventoryListener;
-import com.spigot.plugin.blockshuffle2.listeners.ItemDropListener;
+import com.spigot.plugin.blockshuffle2.listeners.ItemRelatedListener;
 import com.spigot.plugin.blockshuffle2.listeners.ItemGetListener;
 import com.spigot.plugin.blockshuffle2.listeners.PlayerListener;
 import com.spigot.plugin.blockshuffle2.tasks.TimerTask;
@@ -60,7 +60,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     //Voting
     public static boolean VOTING = false;
     public static int VOTE_COUNT = 0;
-    public static Biome[] VOTING_BIOMES = new Biome[2];
+    public static NamespacedKey[] VOTING_BIOMES = new NamespacedKey[2];
 
     //Power ups content
     public static final Map<Player, Inventory> PLAYER_POWER_UPS = new HashMap<>();
@@ -77,36 +77,36 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
     private static final List<Chunk> AllChunksInBorder = new ArrayList<>();
     private static final Set<Biome> AllBiomesInBorder = new HashSet<>();
     private static Map<NamespacedKey, Set<Material>> BLOCKS_TAKING_PART_IN_THE_GAME;
-    private static List<Material> BlocksInGame = new ArrayList<>();
+    private static final Set<Material> BlocksInGame = new HashSet<>();
     private static final PlayableBlocks playableBlocksManager = PlayableBlocks.getInstance();
     public static final Map<Player, PlayerSpecialization> PLAYERS_SPECS = new HashMap<>();
 
-    public static void voteWinner(Biome votingBiome) {
-
+    public static void voteWinner(NamespacedKey votingBiome) {
 
         if (votingBiome == null){
 
-            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(VOTING_BIOMES[0].getKey()));
-            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(VOTING_BIOMES[1].getKey()));
+            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(VOTING_BIOMES[0]));
+            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(VOTING_BIOMES[1]));
 
             PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p ->
                     p.sendTitle(ChatColor.WHITE + "TIE!",ChatColor.LIGHT_PURPLE + "Both biomes are being added!",5,60,15));
             System.out.println("TIE!" + " Both biomes are being added!");
 
-            BLOCKS_TAKING_PART_IN_THE_GAME.remove(VOTING_BIOMES[0].getKey());
-            BLOCKS_TAKING_PART_IN_THE_GAME.remove(VOTING_BIOMES[1].getKey());
+            BLOCKS_TAKING_PART_IN_THE_GAME.remove(VOTING_BIOMES[0]);
+            BLOCKS_TAKING_PART_IN_THE_GAME.remove(VOTING_BIOMES[1]);
 
         }else {
-            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(votingBiome.getKey()));
+            BlocksInGame.addAll(BLOCKS_TAKING_PART_IN_THE_GAME.get(votingBiome));
             PLAYERS_TAKING_PART_IN_THE_GAME.forEach(p ->
-                    p.sendTitle(ChatColor.WHITE + votingBiome.getKey().getKey() + " WINS!",
-                            ChatColor.LIGHT_PURPLE + votingBiome.getKey().getKey() + " is being added!",5,60,15));
-            System.out.println(votingBiome.getKey().getKey() + " WINS! " + votingBiome.getKey().getKey() + " is being added!");
+                    p.sendTitle(ChatColor.WHITE + votingBiome.getKey().toUpperCase() + " WINS!",
+                            ChatColor.LIGHT_PURPLE + votingBiome.getKey().toUpperCase() + " is being added!",5,60,15));
+            System.out.println(votingBiome.toString().toUpperCase() + " WINS! " + votingBiome.toString().toUpperCase() + " is being added!");
 
-            BLOCKS_TAKING_PART_IN_THE_GAME.remove(votingBiome.getKey());
+            BLOCKS_TAKING_PART_IN_THE_GAME.remove(votingBiome);
         }
 
-        System.out.println("Current biomes left in pool -> " + BLOCKS_TAKING_PART_IN_THE_GAME);
+        VOTE_COUNT = 0;
+        System.out.println("Current biomes left in pool -> " + BLOCKS_TAKING_PART_IN_THE_GAME.keySet());
     }
 
     public static void voteCount() {
@@ -114,11 +114,11 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         VOTING=false;
 
         if (VOTE_COUNT > 0){
-            BlockShuffle2.voteWinner(VOTING_BIOMES[0]);
+            BlockShuffle2.voteWinner(VOTING_BIOMES[1]);
             return;
         }
         if (VOTE_COUNT < 0){
-            BlockShuffle2.voteWinner(VOTING_BIOMES[1]);
+            BlockShuffle2.voteWinner(VOTING_BIOMES[0]);
             return;
         }
         BlockShuffle2.voteWinner(null);
@@ -165,7 +165,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
             throw new NullPointerException("World name should be " + WORLD_NAME);
         }
 
-        getServer().getPluginManager().registerEvents(new ItemDropListener(), this);
+        getServer().getPluginManager().registerEvents(new ItemRelatedListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new ItemGetListener(), this);
@@ -191,18 +191,19 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
             return;
         }
 
-        if (VOTING){
+        if (VOTING && PLAYED_ROUNDS <= MAX_ROUNDS){
 
             if (BLOCKS_TAKING_PART_IN_THE_GAME.size() <= 2){
                 VOTING = false;
-                return;
+                run();
             }
-
             prepareVotingForPlayers();
 
             timerTask.cancel();
             timerTask = new TimerTask();
+            timerTask.isVotingTimerTask = true;
             timerTask.setTimeLeft(40);
+
 
             return;
         }
@@ -226,6 +227,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
             }
 
             timerTask = new TimerTask();
+            timerTask.isVotingTimerTask = false;
 
             return;
         }
@@ -269,21 +271,21 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         ItemStack LEFT_CHOICE = new ItemStack(ConstantUtils.LEFT_CHOICE);
         ItemStack RIGHT_CHOICE = new ItemStack(ConstantUtils.RIGHT_CHOICE);
 
-        List<Biome> biomesTemp = new ArrayList<>(AllBiomesInBorder);
+        List<NamespacedKey> biomesTemp = new ArrayList<>(BLOCKS_TAKING_PART_IN_THE_GAME.keySet());
 
-        int index = (int)Math.random() * biomesTemp.size();
+        int index = (int) (Math.random() * biomesTemp.size());
         ItemMeta itemMeta = LEFT_CHOICE.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.DARK_GREEN + biomesTemp.get(index).toString().toUpperCase());
+        itemMeta.setDisplayName(ChatColor.DARK_GREEN + biomesTemp.get(index).getKey().toUpperCase());
         LEFT_CHOICE.setItemMeta(itemMeta);
 
         VOTING_BIOMES[0] = biomesTemp.get(index);
 
         biomesTemp.remove(index);
 
-        index = (int)Math.random() * biomesTemp.size();
+        index = (int) (Math.random() * biomesTemp.size());
 
         itemMeta = RIGHT_CHOICE.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.DARK_RED + biomesTemp.get(index).toString().toUpperCase());
+        itemMeta.setDisplayName(ChatColor.DARK_RED + biomesTemp.get(index).getKey().toUpperCase());
         RIGHT_CHOICE.setItemMeta(itemMeta);
 
         VOTING_BIOMES[1] = biomesTemp.get(index);
@@ -299,9 +301,9 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
                 items.put(counter[0], item);
                 counter[0]++;
             });
-            player.sendMessage(ChatColor.YELLOW + "Press 'Q' on wool of your choice!");
+            player.sendMessage(ChatColor.YELLOW + "Right click having wool of your choice!");
             player.sendTitle(ChatColor.LIGHT_PURPLE + "Vote for biome!",
-                    ChatColor.DARK_GREEN + "" + VOTING_BIOMES[0] + " vs " + ChatColor.DARK_RED + VOTING_BIOMES[1],5,60,15);
+                    ChatColor.DARK_GREEN + VOTING_BIOMES[0].getKey() + " vs " + ChatColor.DARK_RED + VOTING_BIOMES[1].getKey(),5,60,15);
 
             PLAYER_INVENTORY.put(player, items);
             player.getInventory().clear();
@@ -310,6 +312,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
             counter[0] = 0;
         }
+
     }
 
     private static void assignRandomBlocksToPlayers() {
@@ -321,7 +324,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
             index = (int)(Math.random() * BlocksInGame.size());
 
-            materialToAssign = BlocksInGame.get(index);
+            materialToAssign = (Material) BlocksInGame.toArray()[index];
             PLAYER_GOALS.put(player, materialToAssign);
             System.out.println(player.getDisplayName() + " -> " + materialToAssign + "(" + index + " from " + BlocksInGame.size() + ")");
 
@@ -383,6 +386,7 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         System.out.println("Starting World Initialization...");
         ServerMessage("Starting World Initialization...");
         ServerMessageUrgent("PLEASE DO NOT MOVE, SERVER WILL BE FROZEN FOR BETTER PERFORMANCE");
+        ServerMessageUrgent("SERVER MIGHT KICK YOU OUT");
 
         getAllChunksAndBiomesFromBorder(Bukkit.getServer());
         BlockShuffleLibrary.prepareBlocks();
@@ -421,8 +425,8 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
 
                 Location location = biomeSearchResult.getLocation();
 
-                System.out.println(biome + " dis -> " + location.distance(server.getWorld(WORLD_NAME).getSpawnLocation()));
-                if (location.distance(server.getWorld(WORLD_NAME).getSpawnLocation()) <= (double) WORLD_SIZE / 2) {
+                System.out.println(biome + " dis -> " + location.distance(Objects.requireNonNull(server.getWorld(WORLD_NAME)).getSpawnLocation()));
+                if (location.distance(Objects.requireNonNull(server.getWorld(WORLD_NAME)).getSpawnLocation()) <= (double) WORLD_SIZE / 2) {
                     System.out.println("Qualified! Added to list");
                     AllBiomesInBorder.add(biome);
                 }

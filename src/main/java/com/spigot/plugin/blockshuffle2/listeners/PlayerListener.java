@@ -1,5 +1,6 @@
 package com.spigot.plugin.blockshuffle2.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -14,12 +15,17 @@ public class PlayerListener implements Listener {
     List<PotionEffect> potionEffects = new ArrayList<>();
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event){
+        potionEffects.clear();
         event.setKeepInventory(true);
-        potionEffects = (List<PotionEffect>) event.getEntity().getActivePotionEffects();
+        event.getDrops().clear();
+        potionEffects.addAll(event.getEntity().getActivePotionEffects());
     }
 
     @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent event){
-        potionEffects.forEach(potionEffect -> event.getPlayer().addPotionEffect(potionEffect));
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        System.out.println(potionEffects);
+        potionEffects.forEach(potionEffect -> {
+            potionEffect.apply(event.getPlayer());
+        });
     }
 }
