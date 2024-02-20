@@ -30,7 +30,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         if (commandSender.isOp()){
             switch (args.length){
                 case 0: {
-                    BlockShuffle2.run();
+                    if (BlockShuffle2.PLAYED_ROUNDS == 0) {
+                        BlockShuffle2.run();
+                    } else {
+                        BlockShuffle2.terminate();
+                        BlockShuffle2.run();
+                    }
                     break;
                 }
                 case 1: {
@@ -49,7 +54,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                         }
                         case "powerups" : {
                             PowerUp.givePowerUp((Player) commandSender, PowerUpLibrary.POWER_UPS_IN_GAME.stream().filter(
-                                    powerUp -> powerUp.getDisplayName().startsWith(args[1])).findFirst().get()); //TODO more than one arg
+                                    powerUp -> powerUp.getNameId().equals(args[1])).findFirst().get());
                             break;
                         }
                     }
@@ -73,7 +78,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
         if (args.length == 2 && args[0].equals("powerups")){
             PowerUpLibrary.POWER_UPS_IN_GAME.forEach(powerUp ->
-                    adders.add(powerUp.getDisplayName()));
+                    adders.add(powerUp.getNameId()));
         }
 
         return adders;

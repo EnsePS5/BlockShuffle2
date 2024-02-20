@@ -1,6 +1,7 @@
 package com.spigot.plugin.blockshuffle2.listeners;
 
 import com.spigot.plugin.blockshuffle2.BlockShuffle2;
+import com.spigot.plugin.blockshuffle2.ConstantUtils;
 import com.spigot.plugin.blockshuffle2.powerups.PowerUp;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,7 +10,12 @@ import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemFlag;
+
+import java.util.Arrays;
 
 public class InventoryListener implements Listener {
 
@@ -34,18 +40,18 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        if (event.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY) &&
-                BlockShuffle2.PLAYER_POWER_UPS.values().stream().findAny().get().getSize() == event.getClickedInventory().getSize()){
-            if (!event.getCurrentItem().getClass().equals(PowerUp.class)){
+
+        if (isPlayersInventoryClickedWhenPowerUpInventoryIsOpenAndItemIsClicked(event)){
+            if (!event.getCurrentItem().getItemMeta().getItemFlags().contains(ItemFlag.HIDE_DESTROYS)){
                 event.setCancelled(true);
+                BlockShuffle2.ServerMessageUrgent("You can only move power-ups when POWER-UP Box is open");
             }
         }
     }
 
-    @EventHandler
-    public void onItemDrag(InventoryDragEvent event){
-
-        System.out.println("dzieje się drag");
-
+    private boolean isPlayersInventoryClickedWhenPowerUpInventoryIsOpenAndItemIsClicked(InventoryClickEvent event){
+        return Arrays.stream(InventoryAction.values()).anyMatch(e -> e.equals(event.getAction())) &&
+                ConstantUtils.POWER_UPS_BOX_SIZE == event.getInventory().getSize() &&
+                event.getClickedInventory().getType().equals(InventoryType.PLAYER);
     }
 }

@@ -490,11 +490,11 @@ public final class BlockShuffle2 extends JavaPlugin implements Listener {
         ServerMessage("Players Initialized Successfully");
     }
 
-    private static void ServerMessage(String message){
+    public static void ServerMessage(String message){
         Bukkit.broadcastMessage(ChatColor.YELLOW + "" + ChatColor.ITALIC + message);
     }
 
-    private static void ServerMessageUrgent(String message){
+    public static void ServerMessageUrgent(String message){
         Bukkit.broadcastMessage(ChatColor.DARK_RED + "" + ChatColor.ITALIC + message);
     }
 

@@ -47,4 +47,7 @@ public class ConstantUtils {
     public static final String FEATHER_FALLING_BOOTS_NAME = "MINERS BOOTS";
     public static final Material LEFT_CHOICE = Material.GREEN_WOOL;
     public static final Material RIGHT_CHOICE = Material.RED_WOOL;
+
+    //Powerups Box
+    public static final Integer POWER_UPS_BOX_SIZE = 18;
 }

@@ -5,34 +5,38 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
-import java.util.UUID;
 
 public class PowerUp extends ItemStack {
 
     private String displayName;
     private List<String> lore;
     private Rarity rarity;
-    public PowerUp(Material material, String displayName, List<String> lore, Rarity rarity){
+    private String nameId;
+    public PowerUp(Material material, String displayName, List<String> lore, Rarity rarity, String nameId){
         super(material);
         this.displayName = displayName;
         this.lore = lore;
         this.rarity = rarity;
+        this.nameId = nameId;
 
-        this.setItemMeta();
+        this.setPowerUpMeta();
     }
 
-    private void setItemMeta(){
+    private void setPowerUpMeta(){
         ItemMeta itemMeta = this.getItemMeta();
-        itemMeta.setDisplayName(Rarity.getColorByRarity(rarity) + displayName);
+        itemMeta.setDisplayName(Rarity.getColorByRarity(this.rarity) + "( " + this.rarity.toString() + " ) " + this.displayName);
         itemMeta.setLore(lore);
+        itemMeta.addItemFlags(ItemFlag.HIDE_DESTROYS);
+        this.setItemMeta(itemMeta);
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getNameId() {
+        return this.nameId;
     }
 
     public static void givePowerUp(Player player, PowerUp powerUp){

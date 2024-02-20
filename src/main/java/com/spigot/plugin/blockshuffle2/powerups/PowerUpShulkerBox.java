@@ -1,6 +1,7 @@
 package com.spigot.plugin.blockshuffle2.powerups;
 
 import com.spigot.plugin.blockshuffle2.BlockShuffle2;
+import com.spigot.plugin.blockshuffle2.ConstantUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 public class PowerUpShulkerBox {
 
     public static Inventory createInventory(Player player){
-        Inventory powerUpSlots = Bukkit.createInventory(player, 18, ChatColor.DARK_PURPLE +
+        Inventory powerUpSlots = Bukkit.createInventory(player, ConstantUtils.POWER_UPS_BOX_SIZE, ChatColor.DARK_PURPLE +
                 player.getDisplayName().toUpperCase() + " POWER UPS");
 
         if (BlockShuffle2.PLAYER_POWER_UPS.containsKey(player)){

@@ -69,16 +69,16 @@ public enum PlayerSpecialization {
                 ItemStack PICKAXE_SILK_TOUCH = ConstantUtils.PICKAXE_SILK_TOUCH;
                 itemMeta = PICKAXE_SILK_TOUCH.getItemMeta();
                 PICKAXE_SILK_TOUCH.addUnsafeEnchantment(Enchantment.SILK_TOUCH, 1);
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DESTROYS);
                 itemMeta.setLore(ConstantUtils.PICKAXE_SILK_TOUCH_LORE);
                 itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.PICKAXE_SILK_TOUCH_NAME);
                 PICKAXE_SILK_TOUCH.setItemMeta(itemMeta);
 
                 ItemStack FEATHER_FALLING_BOOTS = ConstantUtils.FEATHER_FALLING_BOOTS;
                 itemMeta = FEATHER_FALLING_BOOTS.getItemMeta();
-                FEATHER_FALLING_BOOTS.addEnchantment(Enchantment.PROTECTION_FALL,4);
-                FEATHER_FALLING_BOOTS.addEnchantment(Enchantment.DURABILITY, 3);
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.addEnchant(Enchantment.PROTECTION_FALL,4, true);
+                itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DESTROYS);
                 itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.FEATHER_FALLING_BOOTS_NAME);
                 FEATHER_FALLING_BOOTS.setItemMeta(itemMeta);
 
@@ -98,7 +98,7 @@ public enum PlayerSpecialization {
                 ItemStack WIZARD_BOOK = ConstantUtils.WIZARD_BOOK;
                 itemMeta = WIZARD_BOOK.getItemMeta();
                 WIZARD_BOOK.addUnsafeEnchantment(Enchantment.LUCK, 1);
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DESTROYS);
                 itemMeta.setLore(ConstantUtils.WIZARD_BOOK_LORE);
                 itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.WIZARD_BOOK_NAME);
                 WIZARD_BOOK.setItemMeta(itemMeta);
@@ -120,7 +120,7 @@ public enum PlayerSpecialization {
                 ItemStack WARRIOR_EGG_SPAWNER = ConstantUtils.WARRIOR_EGG_SPAWNER;
                 itemMeta = WARRIOR_EGG_SPAWNER.getItemMeta();
                 WARRIOR_EGG_SPAWNER.addUnsafeEnchantment(Enchantment.LUCK, 1);
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DESTROYS);
                 itemMeta.setLore(ConstantUtils.WARRIOR_EGG_SPAWNER_LORE);
                 itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.WARRIOR_EGG_SPAWNER_NAME);
                 WARRIOR_EGG_SPAWNER.setItemMeta(itemMeta);
@@ -143,7 +143,7 @@ public enum PlayerSpecialization {
                 ItemStack BLOCK_COPIER = ConstantUtils.BLOCK_COPIER;
                 itemMeta = BLOCK_COPIER.getItemMeta();
                 BLOCK_COPIER.addUnsafeEnchantment(Enchantment.LUCK, 1);
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DESTROYS);
                 itemMeta.setLore(ConstantUtils.BLOCK_COPIER_LORE);
                 itemMeta.setDisplayName(ChatColor.DARK_BLUE + "" + ChatColor.BOLD + ConstantUtils.BLOCK_COPIER_NAME);
                 BLOCK_COPIER.setItemMeta(itemMeta);
